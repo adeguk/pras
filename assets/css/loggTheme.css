@@ -1,0 +1,173 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+#banner{
+    height:235px; width:100%; left:0; top:0px; border:1px solid #333; margin-bottom:10px;
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
+	LISTS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+ul {
+	margin:0;	padding:0;
+}
+li {
+	list-style:none; padding:0 0 0 5px;	margin-left:0;
+}
+ul.list-of-links {
+	border-bottom:1px dotted #B2B2B2;
+}
+ul.list-of-links li{
+	border-top:1px dotted #B2B2B2;
+}
+ul.list-of-links li.current {
+	background-color:#E5E5E5;
+}
+ul.no-lines, ul.no-lines li {
+	border:none;
+}
+li.list {
+	list-style:inside; padding:0 0 0 5px;	margin-left:0;
+}
+
+img{
+	border:0;
+}
+#slider1 {
+    width:100%; /* important 2 b same as image width */ height:235px; /*important 2 b same as image height*/
+    position:relative; /* important */	overflow:hidden; /* important */
+}
+#slider1Content li{
+    width:100%; /* important to be same as image width or wider */ margin-left:0px; padding:0px;position:absolute;
+}
+.slider1Image {
+    float:left; display:none;
+}
+.slider1Image span {
+    position:absolute; font:10px/15px Arial; padding:10px 13px; width:100%; background-color:#000; color:#fff; display:none;
+}
+footer {
+ 	background-color: #111111;
+    min-height: 20px;
+    overflow: auto;
+}
+.profile-img{
+	border: 2px solid #222222;
+    border-radius: 15px 0;
+    -moz-border-radius: 15px 0;
+    -webkit-border-radius: 15px 0 15px;
+    height: 250px;
+    margin-bottom: 20px;
+    overflow: auto;
+    width: 85%;
+}
+.item{
+    width:48%;
+    float:left;
+    padding:8px 0;
+    border-bottom:1px dotted #333;
+}
+.firstchild{ padding-top:0; }
+.lastchild{
+    border-bottom: 0; padding-bottom:0;
+}
+.item img{ 
+    float:right; 
+    margin:0 0 0 20px;
+}
+.item h3{
+    background: url("../images/square.gif") no-repeat scroll 0 6px rgba(0, 0, 0, 0);
+    color: #A40000;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 15px;
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+.item p, .comment-box p, .vertical_item p{
+    font-size: 12px;
+    margin-bottom: 0;
+}
+.pic{ margin:-10px 0 5px 5px; }
+.comment-box{ margin:1% 0 0; width:96.5%;
+    background-color: #ECECEC;
+    border: 1px solid #aaa;
+    color: #636363;
+    float: left;
+    min-height: 40px;
+    padding:0 1% 0 1.5%;
+}
+.container{
+    background-color: #FFFFFF;
+    border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    -webkit-border-radius: 0 0 10px 10px;
+    border: 1px solid #aaa;
+    border-width: 0 1px 1px;
+    margin-bottom: 10px;
+    margin-top: 0;    
+    padding-bottom: 20px;
+}
+body{ background-color: #e5e5e5; }
+table {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-collapse: inherit;
+}
+tfoot {background-color: #e5e5e5;}
+.edit {
+    background: url('../images/user_edit.png') no-repeat;
+    display: block; float: left; height: 16px; width: 16px;
+}
+.delete{
+    background: url("../images/trash.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block; float: left; height: 16px; width: 16px;
+}
+.add{
+    background: url("../images/plus.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    display: block; float: left; height: 16px; width: 16px;
+}
+.vertical{ width: 100%; }
+.row-fluid [class*="nblock"]:first-child { margin-left: 0; }
+.row-fluid .span {
+    border: 1px solid;
+    width: 31.6239%;
+}
+.row-fluid [class*="block"] {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    min-height: 150px;
+    overflow: auto;
+    border: 1px solid;
+    margin-bottom: 10px;
+}
+.masthead{
+    margin:0 auto;
+    padding: 0 25px;
+    *zoom:1
+}
+fieldset{
+    border: 1px solid #AAAAAA;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    margin: 0;
+}
+legend{
+    border: 1px solid #AAAAAA;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    margin-left: 20px;
+    padding: 0 15px;
+    width: auto;
+}
+.form-horizontal .control-group > label {
+    padding-left: 15px;
+    font-size: 15px;
+}
