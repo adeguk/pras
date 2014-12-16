@@ -1,6 +1,8 @@
 # PRAS : Payment, Registration and Admission Systems
 
-<a href='https://pledgie.com/campaigns/27584'><img alt='Click here to lend your support to: PRAS and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27584.png?skin_name=chrome' border='0' ></a>
+<div style="float: right; margin: 0 20px 20px 0">
+	<a href='https://pledgie.com/campaigns/27584'><img alt='Click here to lend your support to: PRAS and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27584.png?skin_name=chrome' border='0' ></a>
+</div>
 
 That's Bonfire's goal: provide a solid base off of which to build your new web applications. It's not a CMS. Instead, it's a springboard to build off of with many of the tools you wish you had on projects but never took the time to build.
 
