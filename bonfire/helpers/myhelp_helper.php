@@ -186,3 +186,20 @@ if (! function_exists('query2Excel')) {
         force_download($filename.'.csv', $downloadfile); 
     }
 }
+
+if ( ! function_exists('limit_words')) {
+    /**
+     * Creates a limit_words that reduces long description to specify number of character(s).
+     *
+     * @param $string string The original words/characters to be reduced.
+     * @param $word_limit interger The length of character to reduce the original words/sentences by.
+     * @author: Adewale Adegoroye Sitechum, www.sitechum.com.ng, December 2013
+     * @return string The full html for the select input.
+     */
+    function limit_words($string, $word_limit){
+
+        $words = explode(" ", $string);
+        return implode(" ", array_splice($words, 0, $word_limit));
+
+    }//end
+}

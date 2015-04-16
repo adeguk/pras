@@ -1,26 +1,19 @@
-# PRAS : Payment, Registration and Admission Systems
+# Faster Development of CodeIgniter 2.1.3 Apps
 
 <div style="float: right; margin: 0 20px 20px 0">
-	<a href='https://pledgie.com/campaigns/27584'><img alt='Click here to lend your support to: PRAS and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27584.png?skin_name=chrome' border='0' ></a>
+	<a href='http://www.pledgie.com/campaigns/15326'><img alt='Click here to lend your support to: Bonfire - faster CodeIgniter development and make a donation at www.pledgie.com !' src='http://pledgie.com/campaigns/15326.png?skin_name=chrome' border='0' /></a>
 </div>
 
 That's Bonfire's goal: provide a solid base off of which to build your new web applications. It's not a CMS. Instead, it's a springboard to build off of with many of the tools you wish you had on projects but never took the time to build.
 
 All wrapped up in an elegant interface that will make you proud when you hand the project over to your client.
-The students may or may not have prior experience using such system. Ideally, any student can identify him/herself to the system, to do the following:
 
-1. Register, Add, or Drop course/courses during the registration period.
-2. Pay registration fees Online through a secured web access.
+## Current Features
 
-## Current PRAS Features:
-- Course Registration and print it out.
-- Transcript
-- Student Information
-- Registration Management
-- Financial records
-- Current Transactions.
-- Change the login and password 
+- Very flexible template/theme system, capable of Wordpress-like parent/child themes.
 - Uses Twitter Bootstrap for the Admin and Default themes
+- Fully modular and built around HMVC
+- 4 ‘contexts’ ready for your code: Content, Reports, Settings and Developer Tools
 - Database backup and maintenance interface
 - Role-based access control
 - Built-in users/auth system
@@ -31,12 +24,33 @@ The students may or may not have prior experience using such system. Ideally, an
 - Migration-ready (using either raw SQL or Database Forge commands)
 - Log view/maintenance
 
-## The PRAS Team
+## Road Map
+
+Check out our online [road map](https://trello.com/board/bonfire-roadmap/4f21de254768c8463f09c85b) where you can comment and vote on items in the lists.
+
+## Stay Up To Date
+
+Follow Bonfire's progress and commits at Twitter by following [cibonfire](http://twitter.com/#!/cibonfire).
+
+## Lend A Hand
+
+If you're interested in helping out, fork the project and start coding! I'd love to have you on board. You can always shoot me an email at lonnieje@gmail.com and we can talk about how you'll best fit it and what the best place to start coding would be.
+
+
+Let's make this the best kick-start to any CodeIgniter project.
+
+## Bug Reports 
+
+We strive to make Bonfire a solid base to work with.  In doing so your Bug Reports are very vital to us.  Before making a Bug Report please check the existing
+[Issue Tracker](https://github.com/ci-bonfire/Bonfire/issues) , if the bug you have found does not exist in the issue tracker already, please text a minute to read the [guide lines](https://github.com/ci-bonfire/Bonfire/wiki/Issue-Tracking-and-Pull-Requests) to making a Good Bug report.
+
+
+## The Team
 
 The Bonfire Team is made up from developers around the world interested in making Bonfire a better kickstart for your [CodeIgniter](http://codeigniter.com) projects.
 
-- [Adewale Adegoroye](http://loggcity.com.ng) - Lead Developer
-
-## Special Thanks
-
-Special Thanks to the Bonfire Team for making Bonfire a better kickstart for such a projects like this.
+- [Lonnie Ezell](http://lonnieezell.com) - Lead Developer
+- [Sean Downey](https://github.com/seandowney)
+- [Shawn Crigger](https://github.com/svizion)
+- [Alan Jenkins](https://github.com/sourcejedi)
+- [Mat Whitney](https://github.com/mwhitneysdsu)

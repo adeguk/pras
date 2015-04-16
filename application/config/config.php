@@ -20,7 +20,7 @@ $config['modules_locations'] = array(
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://bondev.dev:82';
+$config['base_url']	= 'http://bondev.dev';
 
 /*
 |--------------------------------------------------------------------------
