@@ -1,0 +1,91 @@
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+class Reports extends Admin_Controller {
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->auth->restrict('Course.Reports.View');
+
+        Assets::add_js( array ( Template::theme_url('js/jquery.dataTables.min.js' )) );
+        Assets::add_js( array ( Template::theme_url('js/bootstrap-dataTables.js' )) );
+        Assets::add_css( array ( Template::theme_url('css/datatable.css') ) ) ;
+        Assets::add_css( array ( Template::theme_url('css/bootstrap-dataTables.css') ) ) ;
+
+        #$this->load->model(array('prog_semester_unit_model', 'programme_model', 'degree_model', 'coursebank_model'));
+
+        Template::set('toolbar_title', 'Course and Registration Activities');
+        Template::set_block('sub_nav', 'reports/_sub_nav');
+        
+    }
+
+    public function index() {
+
+        #$psUnits = $this->prog_semester_unit_model->find_all();
+
+        #Template::set('psUnits', $psUnits);
+        Template::set_view('reports/course_registration');
+        Template::render();
+    }
+
+    //to create: form display for new programme semester unit
+    public function create() {
+
+        $this->auth->restrict('Course.Settings.Add', SITE_AREA.'/settings/course');
+
+        if ($this->input->post('submit')) {
+            if ($this->prog_semester_unit_model->save_progSU()) {
+                // Log the activity
+                #log_activity($this->auth->user_id(), 'New Course created in Course Bank : ' . $this->input->ip_address(), 'course');
+                Template::set_message('Your programme semester unit was successfully created.', 'success');
+                redirect(SITE_AREA .'/settings/course');
+            }
+        }
+
+        Template::set('toolbar_title', 'Manage Programme Semester Unit');
+        Template::set_view('settings/create_psu');
+        Template::render();
+    }
+
+    //to edit
+    public function edit($id=null)  {
+
+        $this->auth->restrict('Course.Settings.Manage', SITE_AREA.'/settings/course');
+
+        if ($this->input->post('submit')) {
+            if ($this->prog_semester_unit_model->save_progSU('update', $id)) {
+
+                // Log the activity
+                #log_activity($this->auth->user_id(), 'Course with ID: '. $id . ' modified in Course Bank : ' . $this->input->ip_address(), 'course');
+                Template::set_message('Your programme semester unit was successfully editted.', 'success');
+                redirect(SITE_AREA .'/settings/course');
+            }
+        }
+
+        Template::set('post', $this->prog_semester_unit_model->find($id));
+        Template::set('toolbar_title', 'Manage Programme Semester Unit');
+        Template::set_view('settings/edit_psu');
+        Template::render();
+    }
+
+    //to delete
+    public function delete()  {
+
+        $this->auth->restrict('Course.Settings.Delete', SITE_AREA.'/settings/course');
+
+        if ($checked = $this->input->post('checked')) {
+            foreach ($checked as $id) {
+                $this->prog_semester_unit_model->delete($id);
+
+                // Log the activity
+                #log_activity($this->auth->user_id(), 'Course with ID: '. $id . ' deleted from Course Bank : ' . $this->input->ip_address(), 'course');
+            }
+            Template::set_message('Your programme semester unit was successfully deleted.', 'success');
+        }
+        else {
+            Template::set_message('Your programme semester unit was not successfully deleted.', 'error');
+        }
+
+        redirect(SITE_AREA .'/settings/course');
+    }
+}
