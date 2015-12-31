@@ -1,259 +1,210 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
+
 /**
  * Bonfire
  *
- * An open source project to allow developers get a jumpstart their development of CodeIgniter applications
+ * An open source project to allow developers to jumpstart their development of
+ * CodeIgniter applications
  *
  * @package   Bonfire
  * @author    Bonfire Dev Team
- * @copyright Copyright (c) 2011 - 2013, Bonfire Dev Team
- * @license   http://guides.cibonfire.com/license.html
+ * @copyright Copyright (c) 2011 - 2015, Bonfire Dev Team
+ * @license   http://opensource.org/licenses/MIT The MIT License
  * @link      http://cibonfire.com
  * @since     Version 1.0
  * @filesource
  */
 
-// ------------------------------------------------------------------------
-
 /**
- * UI Module
+ * UI settings controller
  *
  * Manages the keyboard shortcuts used in the Bonfire admin interface.
  *
- * @package    Bonfire
- * @subpackage Modules_Ui
- * @category   Controllers
- * @author     Bonfire Dev Team
- * @link       http://guides.cibonfire.com/helpers/file_helpers.html
- *
+ * @package Bonfire\Modules\UI\Controllers\Settings
+ * @author  Bonfire Dev Team
+ * @link    http://cibonfire.com/docs/developer/keyboard_shortcuts
  */
 class Settings extends Admin_Controller
 {
+    /**
+     * Setup the required permissions and load required classes.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
 
-	//--------------------------------------------------------------------
+        $this->auth->restrict('Bonfire.UI.View');
+        $this->auth->restrict('Bonfire.UI.Manage');
 
-	/**
-	 * Setups the required permissions and loads required classes
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		parent::__construct();
+        $this->lang->load('ui');
 
-		$this->auth->restrict('Bonfire.UI.View');
-		$this->auth->restrict('Bonfire.UI.Manage');
-		$this->lang->load('ui');
+        Template::set('toolbar_title', lang('ui_default_title'));
+    }
 
-		Template::set('toolbar_title', 'UI Settings');
+    /**
+     * Display the available shortcuts and the details of the keys setup for these
+     * shortcut options.
+     *
+     * Manages adding, editing and deleting of the shortcut keys.
+     *
+     * @return void
+     */
+    public function index()
+    {
+        if (isset($_POST['add_shortcut'])) {
+            if ($this->addShortcut()) {
+                Template::set_message(lang('ui_shortcut_success'), 'success');
+            } else {
+                Template::set_message(lang('ui_shortcut_add_error'), 'error');
+            }
+        } elseif (isset($_POST['remove_shortcut'])) {
+            if ($this->removeShortcut()) {
+                Template::set_message(lang('ui_shortcut_remove_success'), 'success');
+            } else {
+                Template::set_message(lang('ui_shortcut_remove_error'), 'error');
+            }
+        } elseif (isset($_POST['save'])) {
+            if ($this->saveSettings()) {
+                Template::set_message(lang('ui_shortcut_save_success'), 'success');
+            } else {
+                Template::set_message(lang('ui_shortcut_save_error'), 'error');
+            }
+        }
 
-	}//end __construct()
+        // Read available shortcuts from the application config.
+        Template::set('current', config_item('ui.current_shortcuts'));
+        Template::set('settings', $this->settings_lib->find_all_by('module', 'core.ui'));
+        Template::set('toolbar_title', lang('ui_shortcuts'));
 
-	//--------------------------------------------------------------------
+        Template::render();
+    }
 
-	/**
-	 * Displays the available shortcuts and the details of the keys setup
-	 * for these shortcut options.  Manages adding, editing and deleting of
-	 * the shortcut keys.
-	 *
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function index()
-	{
-		if (isset($_POST['add_shortcut']))
-		{
-			if ($this->add())
-			{
-				Template::set_message(lang('ui_shortcut_success'), 'success');
-			}
-			else
-			{
-				Template::set_message(lang('ui_shortcut_add_error'), 'error');
-			}
-		}
-		elseif (isset($_POST['remove_shortcut']))
-		{
-			if ($this->remove())
-			{
-				Template::set_message(lang('ui_shortcut_remove_success'), 'success');
-			}
-			else
-			{
-				Template::set_message(lang('ui_shortcut_remove_error'), 'error');
-			}
-		}
-		elseif (isset($_POST['save']))
-		{
-			if ($this->save_settings())
-			{
-				Template::set_message(lang('ui_shortcut_save_success'), 'success');
-				redirect(uri_string());
-			}
-			else
-			{
-				Template::set_message(lang('ui_shortcut_save_error'), 'error');
-			}
-		}//end if
+    //--------------------------------------------------------------------------
+    // !PRIVATE METHODS
+    //--------------------------------------------------------------------------
 
-		// Read available shortcuts from the application config
-		Template::set('current', config_item('ui.current_shortcuts'));
+    /**
+     * Add a shortcut key for an option.
+     *
+     * @return boolean False on failure, true on success.
+     */
+    private function addShortcut()
+    {
+        $this->form_validation->set_rules('new_action', 'lang:ui_actions', 'required');
+        $this->form_validation->set_rules('new_shortcut', 'lang:ui_shortcuts', 'required|callback__validate_shortcuts');
+        if ($this->form_validation->run() === false) {
+            return false;
+        }
 
-		$settings = $this->settings_lib->find_all_by('module', 'core.ui');
-		Template::set('settings', $settings);
+        $action   = $this->input->post('new_action');
+        $shortcut = $this->input->post('new_shortcut');
 
-		Template::set('toolbar_title', lang('ui_shortcuts'));
-		Template::render();
+        // Read available shortcuts from the application config.
+        $availableActions = config_item('ui.current_shortcuts');
+        if (array_key_exists($action, $availableActions)) {
+            return $this->saveSettings(array($action => $shortcut));
+        }
 
-	}//end index()
+        return false;
+    }
 
-	//--------------------------------------------------------------------
+    /**
+     * Remove a shortcut key.
+     *
+     * @return boolean False on failure, true on success.
+     */
+    private function removeShortcut()
+    {
+        $this->form_validation->set_rules('remove_shortcut[]', 'lang:ui_actions', 'required');
+        if ($this->form_validation->run() === false) {
+            return false;
+        }
 
-	//--------------------------------------------------------------------
-	// !PRIVATE METHODS
-	//--------------------------------------------------------------------
+        $action = key($this->input->post('remove_shortcut'));
 
+        // Read the current settings
+        $availableActions = $this->settings_lib->find_all_by('module', 'core.ui');
+        if (array_key_exists($action, $availableActions)) {
+            return $this->settings_lib->delete($action, 'core.ui');
+        }
 
-	/**
-	 * Add a shortcut key for an option
-	 *
-	 * @access private
-	 *
-	 * @return bool
-	 */
-	private function add()
-	{
+        return false;
+    }
 
-		$this->form_validation->set_rules('new_action', lang('ui_actions'), 'required');
-		$this->form_validation->set_rules('new_shortcut', lang('ui_shortcuts'), 'required|callback__validate_shortcuts');
+    /**
+     * Save multiple shortcut keys at the same time allowing the user to edit the
+     * settings.
+     *
+     * @param array $settings Array of shortcuts.
+     *
+     * @return boolean False on failure, true on success.
+     */
+    private function saveSettings($settings = array())
+    {
+        if (empty($settings)) {
+            // Read available shortcuts from the application config.
+            $availableActions = config_item('ui.current_shortcuts');
 
-		if ($this->form_validation->run() === FALSE)
-		{
-			return FALSE;
-		}
+            // The text inputs need set_value(), so an array can't be used the
+            // way the remove buttons use them.
+            // set_value("shortcut[$action]") is not supported
+            foreach ($availableActions as $action => $shortcut) {
+                if (isset($_POST["shortcut_$action"])) {
+                    $this->form_validation->set_rules(
+                        "shortcut_$action",
+                        'lang:ui_shortcuts',
+                        'required|callback__validate_shortcuts'
+                    );
+                    $settings[$action] = $this->input->post("shortcut_$action");
+                }
+            }
 
-		$action   = $this->input->post('new_action');
-		$shortcut = $this->input->post('new_shortcut');
+            if ($this->form_validation->run() === false) {
+                return false;
+            }
+        }
 
-		// Read available shortcuts from the application config
-		$available_actions = config_item('ui.current_shortcuts');
+        if (empty($settings) || ! is_array($settings)) {
+            return false;
+        }
 
-		if (array_key_exists($action, $available_actions))
-		{
-			return $this->save_settings(array($action => $shortcut));
-		}
+        // Continue saving settings if any of them fail, but save the failure result
+        // to return afterwards.
+        $updated = true;
+        foreach ($settings as $action => $shortcut) {
+            $updatedSetting = $this->settings_lib->set($action, $shortcut, 'core.ui');
+            if (! $updatedSetting) {
+                $updated = false;
+            }
+        }
 
-		return FALSE;
+        log_activity(
+            $this->auth->user_id(),
+            lang('bf_act_settings_saved') . ': ' . $this->input->ip_address(),
+            'ui'
+        );
 
-	}//end add()
+        return $updated;
+    }
 
-	//--------------------------------------------------------------------
+    /**
+     * Callback method to validate the shortcut keys.
+     *
+     * @param string $shortcut The shortcut key.
+     *
+     * @return boolean False if validation fails, else true.
+     */
+    public function _validate_shortcuts($shortcut)
+    {
+        // Make sure that the shortcuts don't have spaces.
+        if (stristr($shortcut, " ") !== false) {
+            $this->form_validation->set_message('_validate_shortcuts', 'lang:ui_shortcut_error');
 
+            return false;
+        }
 
-	/**
-	 * Remove a shortcut key
-	 *
-	 * @access private
-	 *
-	 * @return bool
-	 */
-	private function remove()
-	{
-		$this->form_validation->set_rules('remove_shortcut[]', lang('ui_actions'), 'required|is_array');
-
-		if ($this->form_validation->run() === FALSE)
-		{
-			return FALSE;
-		}
-
-		$action   = key($this->input->post('remove_shortcut'));
-
-		// Read our current settings
-		$available_actions = $this->settings_lib->find_all_by('module', 'core.ui');
-
-		if (array_key_exists($action, $available_actions))
-		{
-			return $this->settings_lib->delete($action, 'core.ui');
-		}
-
-		return FALSE;
-
-	}//end remove()
-
-	//--------------------------------------------------------------------
-
-	/**
-	 * Save multiple shortcut keys at the same time allowing the user to
-	 * edit the settings
-	 *
-	 * @param array $settings Array of shortcuts
-	 *
-	 * @return bool
-	 */
-	private function save_settings($settings = array())
-	{
-		if (empty($settings))
-		{
-			// Read available shortcuts from the application config
-			$available_actions = config_item('ui.current_shortcuts');
-
-			// We can't use an array like the remove buttons do
-			// because the text inputs need set_value().
-			// set_value("shortcut[$action]") is not supported
-			foreach ($available_actions as $action => $shortcut)
-			{
-				if (isset($_POST["shortcut_$action"]))
-				{
-					$this->form_validation->set_rules("shortcut_$action", lang('ui_shortcuts'), 'required|callback__validate_shortcuts');
-
-					$settings[$action] = $this->input->post("shortcut_$action");
-				}
-			}
-
-			if ($this->form_validation->run() === FALSE)
-			{
-				return FALSE;
-			}
-
-		}//end if
-
-		if (is_array($settings))
-		{
-			foreach($settings as $action => $shortcut)
-			{
-				$updated = $this->settings_lib->set($action, $shortcut, 'core.ui');
-			}
-		}
-
-		// Log the activity
-		$this->activity_model->log_activity($this->current_user->id, lang('bf_act_settings_saved').': ' . $this->input->ip_address(), 'ui');
-
-		return $updated;
-
-	}//end save_settings()
-
-	//--------------------------------------------------------------------
-
-	/**
-	 * Callback method to make sure that the shortcut ksys are valid
-	 *
-	 * @param string $shortcut The shortcut key
-	 *
-	 * @return bool
-	 */
-	public function _validate_shortcuts($shortcut)
-	{
-		// Make sure that the shortcuts don't have spaces
-
-		if (stristr($shortcut, " ") !== FALSE)
-		{
-			$this->form_validation->set_message('_validate_shortcuts', lang('ui_shortcut_error'));
-			return FALSE;
-		}
-
-		return TRUE;
-
-	}//end _validate_shortcuts()
-
-}//end Settings
+        return true;
+    }
+}

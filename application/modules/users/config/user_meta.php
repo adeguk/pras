@@ -32,34 +32,33 @@ $config['user_meta_fields'] =  array(
 			'type' 		=> 'input',
 			'settings' 	=> array(
 				'name'		=> 'dob',
-				'class'		=> 'span10 datepicker',
+				'class'		=> 'input-xlarge datepicker',
 				'placeholder'=> 'Please enter your date of birth',
 				'required'	=> TRUE,
 			),
 		),
 	),
-
+/*
 	array(
 		'name'   		=> 'mobile',
-		'label'   		=> lang('user_meta_telephone'),
+		'label'   		=> lang('pras_telephone'),
 		'rules'   		=> 'required|trim|max_length[11]',
 		'admin_only' 	=> FALSE,
 		'form_detail' 	=> array(
 			'type' 		=> 'input',
 			'settings' 	=> array(
 				'name'		=> 'mobile',
-				'id'		=> 'mobile',
 				'maxlength'	=> '11',
-				'class'		=> 'span10',
+				'class'		=> 'input-xlarge',
 				'placeholder'=> 'Please enter your contact number',
 				'required'	=> TRUE,
 			),
 		),
 	),
-	
+*/
 	array(
 		'name'   		=> 'gender',
-		'label'   		=> lang('user_meta_gender'),
+		'label'   		=> lang('pras_gender'),
 		'rules'   		=> 'required',
 		'admin_only'	=> FALSE,
 		'form_detail' 	=> array(
@@ -67,7 +66,7 @@ $config['user_meta_fields'] =  array(
 			'settings' 	=> array(
 				'name'		=> 'gender',
 				'id'		=> 'gender',
-				'class'		=> 'span10 chzn-select',
+				'class'		=> 'input-xlarge chzn-select',
 				'required'	=> TRUE,
 			),
 			'options' 	=>  array(
@@ -80,88 +79,75 @@ $config['user_meta_fields'] =  array(
 
 	array(
 		'name'   		=> 'nationality',
-		'label'   		=> lang('uuser_meta_nationality'),
-		'rules'   		=> 'trim|max_length[100]',
+		'label'   		=> lang('pras_nationality'),
 		'admin_only' 	=> FALSE,
 		'form_detail'	=> array(
 			'type' 		=> 'nationality_select',
 			'settings' 	=> array(
 				'name'		=> 'nationality',
-				'id'		=> 'nationality',
-				'maxlength'	=> '100',
-				'class'		=> 'span10 chzn-select',
+				'class'		=> 'input-xlarge chzn-select',
 			),
 		),
 	),
 
 	array(
-		'name'   		=> 'street_name',
-		'label'   		=> lang('user_meta_street_name'),
-		'rules'   		=> 'trim|max_length[100]',
-		'frontend' 		=> TRUE,
-		'form_detail' 	=> array(
-			'type' 		=> 'input',
-			'settings' 	=> array(
-				'name'		=> 'street_name',
-				'id'		=> 'street_name',
-				'maxlength'	=> '100',
-				'class'		=> 'span10',
-				'placeholder'=> 'What is your street name?',
-				'required'	=> TRUE,
-			),
-		),
-	),
-
-	array(
-		'name'   		=> 'state',
-		'label'   		=> lang('user_meta_state'),
-		'rules'   		=> 'required|trim|max_length[2]',
-		'form_detail' 	=> array(
-			'type' 		=> 'state_select',
-			'settings' 	=> array(
-				'name'		=> 'state',
-				'id'		=> 'state',
-				'maxlength'	=> '2',
-				'class'		=> 'span10 chzn-select',
-			),
-		),
-	),
-
-	array(
-		'name'   		=> 'country',
-		'label'   		=> lang('user_meta_country'),
-		'rules'   		=> 'required|trim|max_length[100]',
-		'admin_only' 	=> FALSE,
-		'form_detail' 	=> array(
-			'type' 		=> 'country_select',
-			'settings' 	=> array(
-				'name'		=> 'country',
-				'id'		=> 'country',
-				'maxlength'	=> '100',
-				'class'		=> 'span10 chzn-select',
-			),
-		),
-	),
-
-	/*array(
-		'name'   		=> 'type',
-		'label'   		=> lang('user_meta_type'),
-		'rules'   		=> 'required',
-		'frontend' 		=> FALSE,
-		'admin_only' 	=> TRUE,
+		'name'   		=> 'marital_status',
+		'label'   		=> lang('pras_marital_status'),
+		'rules'   		=> '',
 		'form_detail' 	=> array(
 			'type' 		=> 'dropdown',
 			'settings' 	=> array(
-				'name'		=> 'type',
-				'id'		=> 'type',
-				'class'		=> 'span10',
+				'name'		=> 'marital_status',
+				'class'		=> 'input-xlarge chzn-select',
+				'required'	=> FALSE,
 			),
 			'options' 	=>  array(
-                'small'  	=> 'Small Shirt',
-                'med'    	=> 'Medium Shirt',
-                'large'   	=> 'Large Shirt',
-                'xlarge' 	=> 'Extra Large Shirt',
-            ),
+                  '' 		=> 'Please select your marital status',
+                  'Single' 		=> 'Single',
+                  'Divorced' 	=> 'Divorced',
+				  'Married'		=> 'Married'
+                ),
 		),
-	),*/
+	),
+
+	array(
+		'name'   		=> 'health_status',
+		'label'   		=> lang('pras_health_status'),
+		'rules'   		=> '',
+		'form_detail' 	=> array(
+			'type' 		=> 'dropdown',
+			'settings' 	=> array(
+				'name'		=> 'health_status',
+				'class'		=> 'input-xlarge chzn-select',
+				'required'	=> FALSE,
+			),
+			'options' 	=>  array(
+                  '' 		=> 'Please select your health status',
+                  'Healthy' 		=> 'Healthy',
+                  'Averagely Healthy' 	=> 'Averagely Healthy',
+				  'Sick'		=> 'Sick'
+                ),
+		),
+	),
+
+	array(
+		'name'   		=> 'religion',
+		'label'   		=> lang('pras_religion'),
+		'rules'   		=> '',
+		'form_detail' 	=> array(
+			'type' 		=> 'dropdown',
+			'settings' 	=> array(
+				'name'		=> 'religion',
+				'class'		=> 'input-xlarge chzn-select',
+				'required'	=> FALSE,
+			),
+			'options' 	=>  array(
+	            	'' 		=> 'Please select your religion',
+	            	'Christian' 		=> 'Christian',
+	            	'Islam' 	=> 'Islam',
+	            	'Protestant' 	=> 'Protestant',
+					'None'		=> 'None'
+	            ),
+		),
+	),
 );

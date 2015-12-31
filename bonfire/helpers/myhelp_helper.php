@@ -94,10 +94,17 @@ if ( ! function_exists('listUser_byID')) {
 
         $ci->load->model('user_model'); //then, load the model
 
-        $users = $ci->user_model->select('lastname, middlename, firstname')->find_all_by('id', $id);
-		foreach($users as $user){
-		    e(strtoupper($user->lastname).', '.$user->firstname.' '.$user->middlename);
-	    }
+		if (isset($id) && ($id > 0)) {
+        	$user = $ci->user_model->select('lastname, middlename, firstname')->limit(1)->find($id);
+
+			if (isset($user)){
+				e(strtoupper($user->lastname).', '.$user->firstname.' '.$user->middlename);
+			}
+
+		}  else {
+			echo 'User not found!';
+		}
+
 	}//end
 }
 
@@ -127,17 +134,17 @@ if ( ! function_exists('editUser_byRole')) {
             echo "<option $selected value=" .$key. ">";
             e(strtoupper($user->lastname).', '.$user->firstname.' '.$user->middlename);
             echo "</option>";
-        } 
+        }
 	}//end
 }
 
 if (! function_exists('toExcel')) {
 	/**
-	 * Export any given table and its column(s) to Excel in CSV format using codeigniter DB utility class 
+	 * Export any given table and its column(s) to Excel in CSV format using codeigniter DB utility class
 	 * and force_download helper. For complex query, use views
 	 * @author: Adewale Adegoroye Sitechum, www.sitechum.com.ng, April 2014
-	 * @param $tablename string - the name of the table,  
-	 * @param $column string - is the specified column(s) and its (*) by default - to select all from the given table while 
+	 * @param $tablename string - the name of the table,
+	 * @param $column string - is the specified column(s) and its (*) by default - to select all from the given table while
 	 * @param $filename string the download will be saved with this name on the user's desktop. it is exceldownload by default
 	 *
 	 */
@@ -152,20 +159,20 @@ if (! function_exists('toExcel')) {
         $delimiter = ",";
         $newline = "\r\n";
 
-        $downloadfile = $ci->dbutil->csv_from_result($query, $delimiter, $newline); 
+        $downloadfile = $ci->dbutil->csv_from_result($query, $delimiter, $newline);
         // Load the download helper and send the file to your desktop
         $ci->load->helper('download');
-        force_download($filename.'.csv', $downloadfile); 
+        force_download($filename.'.csv', $downloadfile);
     }
 }
 
 if (! function_exists('query2Excel')) {
     /**
-     * Export any given table and its column(s) to Excel in CSV format using codeigniter DB utility class 
+     * Export any given table and its column(s) to Excel in CSV format using codeigniter DB utility class
      * and force_download helper. For complex query, use views
      * @author: Adewale Adegoroye Sitechum, www.sitechum.com.ng, April 2014
-     * @param $tablename string - the name of the table,  
-     * @param $column string - is the specified column(s) and its (*) by default - to select all from the given table while 
+     * @param $tablename string - the name of the table,
+     * @param $column string - is the specified column(s) and its (*) by default - to select all from the given table while
      * @param $filename string the download will be saved with this name on the user's desktop. it is exceldownload by default
      *
      */
@@ -176,14 +183,14 @@ if (! function_exists('query2Excel')) {
         // Load the DB utility class
         $ci->load->dbutil();
         $query_result = $ci->db->query($query);
-        
+
         $delimiter = ",";
         $newline = "\r\n";
 
-        $downloadfile = $ci->dbutil->csv_from_result($query, $delimiter, $newline); 
+        $downloadfile = $ci->dbutil->csv_from_result($query, $delimiter, $newline);
         // Load the download helper and send the file to your desktop
         $ci->load->helper('download');
-        force_download($filename.'.csv', $downloadfile); 
+        force_download($filename.'.csv', $downloadfile);
     }
 }
 

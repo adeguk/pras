@@ -1,47 +1,38 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 /**
  * Authenticated Controller
  *
- * Provides a base class for all controllers that must check user login
- * status.
+ * Provides a base class for all controllers that must check user login status.
  *
- * @package    Bonfire\Core\Controllers
- * @category   Controllers
- * @author     Bonfire Dev Team
- * @link       http://guides.cibonfire.com/helpers/file_helpers.html
+ * @package  Bonfire\Core\Controllers\Authenticated_Controller
+ * @category Controllers
+ * @author   Bonfire Dev Team
+ * @link     http://cibonfire.com/docs
  *
  */
 class Authenticated_Controller extends Base_Controller
 {
 
-	//--------------------------------------------------------------------
+    protected $require_authentication = true;
 
-	/**
-	 * Class constructor setup login restriction and load various libraries
-	 *
-	 */
-	public function __construct()
-	{
-		// Load the Auth library before the parent constructor to ensure
-		// the current user's settings are honored by the parent
-		$this->load->library('users/auth');
+    //--------------------------------------------------------------------------
 
-		parent::__construct();
+    /**
+     * Class constructor setup login restriction and load various libraries
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->autoload['helpers'][]   = 'form';
+        $this->autoload['libraries'][] = 'Template';
+        $this->autoload['libraries'][] = 'Assets';
+        $this->autoload['libraries'][] = 'form_validation';
 
-		// Make sure we're logged in.
-		$this->auth->restrict();
+        parent::__construct();
 
-		// Load additional libraries
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-		$this->form_validation->set_error_delimiters('', '');
-		$this->form_validation->CI =& $this;	// Hack to make it work properly with HMVC
-	}//end construct()
-
-	//--------------------------------------------------------------------
-
+        $this->form_validation->CI =& $this;
+        $this->form_validation->set_error_delimiters('', '');
+    }
 }
-
-/* End of file Authenticated_Controller.php */
-/* Location: ./application/core/Authenticated_Controller.php */

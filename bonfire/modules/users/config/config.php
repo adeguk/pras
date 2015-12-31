@@ -1,9 +1,11 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 $config['module_config'] = array(
-	'description'	=> 'This is a custom User modudle by Adewale Adegoroye based on the existing Bonfire core user module made to override it.',
-	'author'		=> 'Bonfire Team; modified by Adewale Adegoroye',
-	'weights'		=> array(
-		'settings'	=> 1
-	)
+    'author'      => 'Bonfire Team',
+    'description' => 'Allows users to exist in Bonfire.',
+    'name'        => 'lang:bf_menu_users',
+    'version'     => '0.7.3',
+    'weights'     => array(
+        'settings' => 1,
+    ),
 );

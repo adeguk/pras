@@ -1,10 +1,11 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 $config['module_config'] = array(
-	'name'			=> 'Email Queue',
-	'description'	=> 'Queues emails to be sent in bursts throughout the day.',
-	'menus'	=> array(
-		'settings'	=> 'emailer/settings/menu'
-	),
-	'author'		=> 'Bonfire Team'
+    'author'      => 'Bonfire Team',
+    'description' => 'Queues emails to be sent in bursts throughout the day.',
+    'name'        => 'lang:bf_menu_emailer',
+    'version'     => '0.7.3',
+    'menus'       => array(
+        'settings' => 'emailer/settings/menu',
+    ),
 );

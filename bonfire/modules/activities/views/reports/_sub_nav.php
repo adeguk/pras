@@ -1,14 +1,33 @@
+<?php
+
+$checkSegment = $this->uri->segment(4);
+$activitiesReportsUrl = site_url(SITE_AREA . '/reports/activities');
+$pageUser   = 'activity_user';
+$pageModule = 'activity_module';
+$pageDate   = 'activity_date';
+
+?>
 <ul class="nav nav-pills">
-	<li <?php echo $this->uri->segment(4) == '' ? 'class="active"' : '' ?>>
-		<a href="<?php echo site_url(SITE_AREA .'/reports/activities') ?>"><?php echo lang('activity_home'); ?></a>
+	<li<?php echo $checkSegment == '' ? ' class="active"' : ''; ?>>
+        <?php echo anchor($activitiesReportsUrl, lang('activities_home')); ?>
 	</li>
-	<li <?php echo $this->uri->segment(4) == 'activity_user' ? 'class="active"' : '' ?>>
-		<a href="<?php echo site_url(SITE_AREA .'/reports/activities/activity_user') ?>"><?php echo lang('activity_user'); ?></a>
+    <?php if ($hasPermissionViewUser || $hasPermissionViewOwn) : ?>
+	<li<?php echo $checkSegment == $pageUser || $checkSegment == 'activity_own' ? ' class="active"' : ''; ?>>
+		<?php echo anchor("{$activitiesReportsUrl}/{$pageUser}", lang(str_replace('activity_', 'activities_', $pageUser))); ?>
 	</li>
-	<li <?php echo $this->uri->segment(4) == 'activity_module' ? 'class="active"' : '' ?>>
-		<a href="<?php echo site_url(SITE_AREA .'/reports/activities/activity_module') ?>"><?php echo lang('activity_modules') ?></a>
+    <?php
+    endif;
+    if ($hasPermissionViewModule) :
+    ?>
+	<li<?php echo $checkSegment == $pageModule ? ' class="active"' : ''; ?>>
+		<?php echo anchor("{$activitiesReportsUrl}/{$pageModule}", lang(str_replace('activity_', 'activities_', $pageModule))); ?>
 	</li>
-	<li <?php echo $this->uri->segment(4) == 'activity_date' ? 'class="active"' : '' ?>>
-		<a href="<?php echo site_url(SITE_AREA .'/reports/activities/activity_date') ?>"><?php echo lang('activity_date') ?></a>
+    <?php
+    endif;
+    if ($hasPermissionViewDate) :
+    ?>
+	<li<?php echo $checkSegment == $pageDate ? ' class="active"' : ''; ?>>
+		<?php echo anchor("{$activitiesReportsUrl}/{$pageDate}", lang(str_replace('activity_', 'activities_', $pageDate))); ?>
 	</li>
+    <?php endif; ?>
 </ul>

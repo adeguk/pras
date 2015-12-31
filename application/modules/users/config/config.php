@@ -1,9 +1,11 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php defined('BASEPATH') || exit('No direct script access allowed');
 
 $config['module_config'] = array(
-	'description'	=> 'Allows users to exist in Bonfire.',
-	'author'		=> 'Bonfire Team',
-	'weights'		=> array(
-		'settings'	=> 1
-	)
+    'author'      => 'Adewale Adegoroye',
+    'description' => 'Allows ugrade to exist User module in Bonfire.',
+    'name'        => 'lang:bf_menu_users',
+    'version'     => '0.1',
+    'weights'     => array(
+        'settings' => 1,
+    ),
 );

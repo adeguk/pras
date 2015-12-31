@@ -205,22 +205,5 @@ $lang['us_tab_roles']				= 'By Role';
 $lang['us_forced_password_reset_note']	= 'Due to security reasons, you must choose a new password for your account.';
 
 $lang['us_back_to']					= 'Back to ';
-
-/* New Language word by me:Adegoroye Adewale SA : 11/11/2013 */
-$lang['user_lastname']				= 'Last Name (Surname)';
-$lang['user_firstname']				= 'First Name';
-$lang['user_middlename']			= 'Middle Name';
-$lang['user_meta_upload_image']		= 'Upload Passport Image';
-$lang['user_meta_gender']			= 'Gender';
-$lang['user_meta_nationality']		= 'Nationality';
-$lang['user_meta_telephone']		= 'Telephone/Mobile';
-$lang['user_education']				= 'Education';
-$lang['user_marital_status']		= 'Marital Status';
-$lang['user_religion']				= 'Religion';
-$lang['user_health_status']			= 'Health Status';
-$lang['user_fullname']				= 'FullName';
-$lang['bf_context_academic']		= 'Academic';
-$lang['registration_by_faculty']	= 'Course Registration by Faculty';
-$lang['registration_by_level']		= 'Course Registration by Level';
-$lang['activity_no_top_faculties']	= 'No available count of faculty!';
-$lang['activity_no_top_departments']	= 'No available count of department!';
+$lang['us_no_account']              = 'No account?';
+$lang['us_force_password_reset']    = 'Force password reset on next login';

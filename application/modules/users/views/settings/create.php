@@ -2,7 +2,7 @@
 <div class="alert alert-warning fade in">
 	<h4 class="alert-heading"><?php echo lang('us_banned_admin_note'); ?></h4>
 </div>
-<?php endif; 
+<?php endif;
 
 if (isset($password_hints) ) : ?>
 <div class="row-fluid">
@@ -46,7 +46,7 @@ if (isset($password_hints) ) : ?>
 					<select name="role_id" id="role_id" class="chzn-select">
 					<?php if (isset($roles) && is_array($roles) && count($roles)) :
 						foreach ($roles as $role) :
-							if (has_permission('Permissions.'. ucfirst($role->role_name) .'.Manage')) : 
+							if (has_permission('Permissions.'. ucfirst($role->role_name) .'.Manage')) :
 								// check if it should be the default
 								$default_role = FALSE;
 								if ((isset($user) && $user->role_id == $role->role_id) || (!isset($user) && $role->default == 1)) {
@@ -55,7 +55,7 @@ if (isset($password_hints) ) : ?>
 						<option value="<?php echo $role->role_id ?>" <?php echo set_select('role_id', $role->role_id, $default_role) ?>>
 							<?php e(ucfirst($role->role_name)) ?>
 						</option>
-							<?php endif; 
+							<?php endif;
 						endforeach;
 					endif; ?>
 					</select>
@@ -64,7 +64,7 @@ if (isset($password_hints) ) : ?>
 		</fieldset>
 		<br />
 		<?php endif;
-			
+
 			if (isset($user) && has_permission('Permissions.'. ucfirst($user->role_name).'.Manage') && $user->id != $this->auth->user_id() && ($user->banned || $user->deleted)) : ?>
 		<fieldset>
 				<legend><?php echo lang('us_account_status') ?></legend>
@@ -111,7 +111,8 @@ if (isset($password_hints) ) : ?>
 			<div class="control-group <?php echo iif( form_error('lastname') , 'error') ;?>">
 				<label class="control-label" for="lastname"><?php echo lang('user_lastname'); ?></label>
 				<div class="controls">
-					<input class="input-xxlarge" type="text" id="lastname" name="lastname" placeholder="What is your father's name?" value="<?php echo set_value('lastname', isset($user) ? $user->lastname : '') ?>" />
+					<input class="input-xxlarge" type="text" id="lastname" name="lastname" placeholder="What is your father's name?"
+						value="<?php echo set_value('lastname', isset($user) ? $user->lastname : '') ?>" />
 				<?php if (form_error('lastname')) echo '<span class="help-inline">'. form_error('lastname') .'</span>'; ?>
 				</div>
 			</div>
@@ -119,7 +120,8 @@ if (isset($password_hints) ) : ?>
 			<div class="control-group <?php echo iif( form_error('firstname') , 'error') ;?>">
 				<label class="control-label" for="firstname"><?php echo lang('user_firstname'); ?></label>
 				<div class="controls">
-					<input class="input-xxlarge" type="text" id="firstname" name="firstname" placeholder="What is your first name?" value="<?php echo set_value('firstname', isset($user) ? $user->firstname : '') ?>" />
+					<input class="input-xxlarge" type="text" id="firstname" name="firstname" placeholder="What is your first name?"
+						value="<?php echo set_value('firstname', isset($user) ? $user->firstname : '') ?>" />
 				<?php if (form_error('firstname')) echo '<span class="help-inline">'. form_error('firstname') .'</span>'; ?>
 				</div>
 			</div>
@@ -127,7 +129,8 @@ if (isset($password_hints) ) : ?>
 			<div class="control-group <?php echo iif( form_error('middlename') , 'error') ;?>">
 				<label class="control-label" for="middlename"><?php echo lang('user_middlename'); ?></label>
 				<div class="controls">
-					<input class="input-xxlarge" type="text" id="middlename" name="middlename" placeholder="What is your middle or other name?" value="<?php echo set_value('middlename', isset($user) ? $user->middlename : '') ?>" />
+					<input class="input-xxlarge" type="text" id="middlename" name="middlename" placeholder="What is your middle or other name?"
+						value="<?php echo set_value('middlename', isset($user) ? $user->middlename : '') ?>" />
 				<?php if (form_error('middlename')) echo '<span class="help-inline">'. form_error('middlename') .'</span>'; ?>
 				</div>
 			</div>
@@ -135,7 +138,8 @@ if (isset($password_hints) ) : ?>
 			<div class="control-group <?php echo iif( form_error('display_name') , 'error') ;?>">
 				<label class="control-label" for="display_name"><?php echo lang('bf_display_name'); ?></label>
 				<div class="controls">
-					<input class="input-xxlarge" type="text" id="display_name" name="display_name" placeholder="Preferrably, please use your job tittle here" value="<?php echo set_value('display_name', isset($user) ? $user->display_name : '') ?>" />
+					<input class="input-xxlarge" type="text" id="display_name" name="display_name"
+						placeholder="Preferrably, please use your job tittle here" value="<?php echo set_value('display_name', isset($user) ? $user->display_name : '') ?>" />
 				<?php if (form_error('display_name')) echo '<span class="help-inline">'. form_error('display_name') .'</span>'; ?>
 				</div>
 			</div>
@@ -198,7 +202,7 @@ if (isset($password_hints) ) : ?>
 		<?php
 			// Allow modules to render custom fields
 			Events::trigger('render_user_form');
-		
+
 			//<!-- Start of User Meta -->
 			$this->load->view('users/user_meta');
 			//<!-- End of User Meta -->

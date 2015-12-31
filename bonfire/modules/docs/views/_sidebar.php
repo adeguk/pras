@@ -1,41 +1,49 @@
 <div id="toc">
+    <ul class="nav">
+        <?php if (empty($docs) || ! is_array($docs)) : ?>
+        <p class="text-center"><?php echo lang('docs_not_found'); ?></p>
+        <?php
+        else :
+            foreach ($docs as $file => $name) :
+                if (is_array($name)) :
+        ?>
+        <li class='parent'>
+            <div class="nav-header"><?php echo $file; ?></div>
+            <ul class="nav">
+                <?php foreach ($name as $line => $namer) : ?>
+                <li><?php echo anchor($docsDir . '/' . str_replace($docsExt, '', $line), $namer); ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </li>
+        <?php else : ?>
+        <li><?php echo anchor($docsDir . '/' . str_replace($docsExt, '', $file), $name); ?></li>
+        <?php
+                endif;
+            endforeach;
+        endif;
 
-    <!-- Application Specific Docs -->
-    <?php if (isset($app_docs) && count($app_docs)) : ?>
-        <h3><?php e(config_item('docs.app_title')) ?></h3>
-    <?php endif; ?>
-
-    <!-- Bonfire Specific Docs -->
-    <?php if (isset($bf_docs) && count($bf_docs)) :?>
-        <h3><?php e(config_item('docs.bf_title')) ?></h3>
-
-        <ul class="toc">
-        <?php foreach ($bf_docs as $file => $name) : ?>
-            <?php if (is_array($name)) : ?>
-                <li class="parent"><h4><?php echo $file; ?></h4>
-                    <ul>
-                    <?php foreach ($name as $line => $namer) : ?>
-                        <li><a href="<?php echo site_url('docs/'. str_replace('.md', '', $line)) ?>"><?php echo $namer ?></a></li>
-                    <?php endforeach; ?>
-                    </li>
-                    </ul>
-                </li>
-            <?php else: ?>
-                <li><a href="<?php echo site_url('docs/'. str_replace('.md', '', $file)) ?>"><?php echo $name ?></a></li>
-            <?php endif; ?>
-        <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-
-    <!-- Module Specific Docs -->
-    <?php if (isset($module_docs)) :?>
-        <h3>Modules</h3>
-
-        <ul class="toc">
-        <?php foreach ($module_docs as $module => $mod_files) : ?>
-            <li><a href="<?php echo site_url('docs/'. $module) ?>"><?php echo ucwords(str_replace('_', ' ', $module)) ?></a></li>
-        <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-
+        // Module-specific docs.
+        if (empty($module_docs) || ! is_array($module_docs)) :
+        ?>
+        <li class='parent'><?php echo anchor(site_url($docsDir . '/' . str_replace($docsExt, '', $module)), ucwords(str_replace('_', ' ', $module))); ?></li>
+        <?php else : ?>
+        <li class="parent"><div class="nav-header"><?php e(lang('docs_title_modules')); ?></div></li>
+        <?php
+            foreach ($module_docs as $module => $mod_files) :
+                if (count($mod_files)) :
+        ?>
+        <li class="parent">
+            <div class='nav-header'><?php echo $module; ?></div>
+            <ul class='nav'>
+                <?php foreach ($mod_files as $fileName => $title) : ?>
+                <li><?php echo anchor(site_url($docsDir . '/' . str_replace($docsExt, '', $fileName)), ucwords($title)); ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </li>
+        <?php
+                endif;
+            endforeach;
+        endif;
+        ?>
+    </ul>
 </div>

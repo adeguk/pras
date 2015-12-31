@@ -36,6 +36,12 @@ $config['miscellaneous.status'] = array(
     '2' => 'Disabled'
 );
 
+$config['miscellaneous.contact_type'] = array(
+    '1' => 'Permanent',
+    '2' => 'Postal',
+    '3' => 'Temporary'
+);
+
 $config['miscellaneous.marital_status'] = array(
 	'1' => 'Single',
 	'2' => 'Married',
@@ -113,7 +119,7 @@ $config['miscellaneous.religion'] = array(
 	'4' => 'Not religious'
 );
 
-$config['miscellaneous.session'] = array(
+$config['miscellaneous.academic_session'] = array(
 	'1' => '1999/2000',
 	'2' => '2000/2001',
 	'3' => '2001/2002',

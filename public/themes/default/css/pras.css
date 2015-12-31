@@ -1,0 +1,35 @@
+/*!
+ * Pras CSS v1.0.0
+ *
+ * Copyright 2015 Loggcity
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world by @adeguk and @loggcity.
+ */
+ table.table.table-striped tr.deleted td {
+     background-color:rgb(189, 25, 25);
+     color: #fff;
+ }
+
+select, textarea,
+input[type="text"], input[type="password"],
+input[type="datetime"], input[type="datetime-local"],
+input[type="date"], input[type="month"], input[type="time"],
+input[type="week"], input[type="number"], input[type="email"],
+input[type="url"], input[type="search"], input[type="tel"],
+input[type="color"], .uneditable-input {
+    height: 26px;
+    padding: 3px 10px;
+}
+
+.chzn-container-single .chzn-single {
+    height: 26px;
+    padding: 3px 0px 0px 8px;
+}
+.chzn-container-single .chzn-single div {
+    right: 4px;
+    top: 3px;
+}
+.btn { padding: 6px 12px; }
+.well-form {padding-bottom: 0;}

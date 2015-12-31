@@ -1,94 +1,104 @@
-## Installing Bonfire
+# Installing Bonfire
 
-Bonfire has a simple installation script that is designed to help you, the developer, get up and running with a minimum of fuss.  It is not designed to be used for an end product that you distribute.  Installation is a simple process mainly composed of uploading your files and running through a quick 2-step install.
+## Overview
+Bonfire has a simple installation script that is designed to help you, the developer, get up and running with a minimum of fuss. It is not designed to be used for an end product that you distribute. Installation is a simple process mainly composed of uploading your files and letting Bonfire install its database tables for you.
 
-### Upload Your Files
+## Upload Your Files
 
-Upload all of the files/folders from your package to your web server or development environment.  The web root should point to the main folder that contains:
+Upload all of the files/folders from your package to your web server or development environment. The web root should point to the /public folder:
 
-    /assets
+    /application
     /bonfire
-    /docs
-    index.php
+    /public          // Web Root in here...
+    /tests
 
-### Configuration
+By keeping the majority of your application files outside of your web root, your site's security is increased because the files and folders are not accessible directly through the browser. While CodeIgniter comes with default htaccess files in many of the sensitive folders, configuration issues can happen that accidentally allow your php files to be served up as text files, allowing potential hackers to gain too much information about your system. Moving the files removes this possibility. It also makes sniffing the folder structure from a browser, a common first step in hacking a site, much more difficult since the files are not there in the first place.
 
-If you do not have mod_rewrite installed on your server, change the Index File to include <tt>index.php</tt>.
+## Configuration
 
-    $config['index_page'] = 'index.php';
+Before accessing your website, you will need to enter the credentials for your database, else a database error will be thrown when you try to access your site. Enter the details for your site in `application/config/database.php`.
+
+Details on the available options for the `database.php` config file can be found in the [CodeIgniter documentation](http://www.codeigniter.com/user_guide/database/configuration.html).
+
+Ensure that you can access the database using the configured settings. While Bonfire's migrations can create the necessary tables for you, it will not create the database in which those tables reside.
+
+If you are using multiple environments (production, testing, and development), you should create a folder matching the environment name inside your config folder. Then copy the existing `database.php` config file into that folder and set the details for your environment there.
+
+It is possible to set the server's environment by defining a server variable. For example, on an Apache server, you can create a `.conf` file containing the command `SetEnv CI_ENV production` (or add the command to your site's existing `.conf` file), which, when enabled, will tell Bonfire that it is running on the production server, and the configuration (e.g. `error_reporting`) will change accordingly.
 
 
-### Write Permissions
+## Write Permissions
 
-Verify that the following folders are writeable during the install process:
+Verify that the following folders are writable during the install process:
 
-    /bonfire/application/cache
-    /bonfire/application/logs
-    /bonfire/application/config
-    /bonfire/application/archives
-    /bonfire/application/db/backups
-    /bonfire/application/db/migrations
-    /assets/cache
+    /application/cache
+    /application/logs
+    /application/config
+    /application/archives
+    /application/db/backups
+    /application/db/migrations
+    /public/assets/cache
 
 Also, make sure the following file has write permissions:
 
-    /bonfire/application/config/application.php
+    /application/config/application.php
 
 
 
-### The Install Script
+## The Install Script
 
-To start the installation process, head to <tt>http://yoursite.com/install</tt>.
+Now head to your site. Since it has not been installed, you will see a small greeting screen that checks your PHP version, and ensures the required files and folders are writable. If everything looks good here, click the button and your database will be installed for you.
 
-You should be greeted by a Welcome screen that asks you for **Your Database information**.  Enter the connection details for your database and then click **Test DB**.
+## Logging In
 
-If all goes well, it should direct you to Step 2 (the final step), where you just need to enter your:
+During the installation process, a default admin user has been created for you. You can log in with the following credentials:
 
-- Site Title - The name of your site, as it will appear in the browser’s title bar or tab.
-- Username   - Choose a username to log into the site with (if the site is setup that way).
-- Password   - Type a password and confirm it.
-- Your Email - This will be the address that you use to log in with, as well as the address used to send system emails from.  This can be changed later to be able to use separate addresses for login and system emails.
+* email: admin@mybonfire.com
+* username: admin
+* password: password
 
-By default, Bonfire is setup to use emails to login with, and not use usernames at all.  This can be easily configured on the main settings screen.
+When logging in the first time you should modify your profile and change your email address and password to be something unique.
 
-Assuming that everything proceeds without a hitch, you will be redirected to the login screen.  Enter the email and password you just used, and you will be sent to the admin dashboard where you can start building your app.
-
+By default, Bonfire is setup to use emails to login, and not use usernames at all. This can be easily configured on the main settings screen.
 
 
-## Troubleshooting Your Install
+## Securing Your Site
 
-While we have tried to make the install process as simple as possible, sometimes things happen that stop you from completing your installation. We, unfortunately, cannot test in every possible configuration of server out there.
+Once your site is installed and configured, you may want to consider taking some steps to improve the security of your site.
 
-Hopefully, these tips will help you debug your broken install and get up and running quickly.
+* Remove the installer: delete the file `/bonfire/controllers/install.php` from your server (or install/configure your site on a test server and copy the files, without the install controller, to your site's server).
+* Remove `/public/tests.php`
+* Disable automatic migrations in the `/application/config/application.php` file. While `migrate.auto_core` and `migrate.auto_app` are disabled by default, it is often convenient to enable this feature during development. Disabling them can improve your page load times, and ensures that migrations are only run when you intentionally run them.
+* Restrict write access: while the `/application/cache`, `/assets/cache`, and `/application/logs` directories should be writable (by your web server), you can remove write access from the config and db directories. This may limit some functionality (for instance DB backups through the Bonfire interface probably won't work if the web server can't write to the `/application/db/backups` directory), so consider the trade-offs for your environment.
+* Additionally, if you opened up write access for Builder (to `/application/modules`), you will probably want to disable that capability as well (obviously, the module builder will not work in this case, but you can still use it in a local/dev environment and copy the files to the server).
+* Restrict database access: you may be able to adjust the permissions for the database user configured for your Bonfire site to remove potentially damaging capabilities like dropping tables. Ideally, you would enable these permissions only when running migrations against your database.
 
+## Troubleshooting Your Installation
+
+While we have tried to make the install process as simple as possible, sometimes things happen that stop you from completing your installation. We, unfortunately, cannot test every possible server configuration out there.
+
+Hopefully, these tips will help you debug your broken installation and get up and running quickly.
 
 ### Only The 'Welcome to Bonfire' Screen Displays
 
-It might be that your server environment does not support the <tt>PATH_INFO</tt> variable needed to serve search-engine friendly pages.  As a first step, open your <tt>bonfire/application/config/config.php</tt> and look for the URI Protocol setting.  By default, this is set to <tt>AUTO</tt> and works in most cases.  Try changing this variable to one each of the other settings, one at a time, and see if one of these works for your environment.
-
-
+It might be that your server environment does not support the `PATH_INFO` variable needed to serve search-engine friendly pages. As a first step, open `application/config/config.php` and look for the URI Protocol setting. By default, this is set to `AUTO` and works in most cases. Try changing this variable to each of the other settings, one at a time, and see if one of these works for your environment.
 
 ### Page Not Found
 
-The most common cause of this is not having <tt>mod_rewrite</tt> (or equivalent) installed, or you have a missing <tt>.htaccess</tt> file.
+The most common cause of this is not having `mod_rewrite` (or equivalent) installed, or you have a missing `.htaccess` file.
 
-If you know your server does not have mod_rewrite installed, then you will need to edit the <tt>bonfire/application/config/config.php</tt> file.  Find the Index File section and add <tt>index.php</tt> to it.
-
+If you know your server does not have mod_rewrite installed, then you will need to edit the `application/config/config.php` file. Find the Index File section and add `index.php` to it.
 
     $config['index_page'] = 'index.php';
 
-
-If this works, but all of your URL’s now redirect you to the welcome screen, you might need to add a question mark to the end of it.
-
+If this works, but all of your URLs now redirect you to the welcome screen, you might need to add a question mark to the end of it.
 
     $config['index_page'] = 'index.php?';
-
-
 
 ### WAMP and mod_rewrite
 
 If you're having problems with the correct page appearing after hitting **Test Database** on the first screen, try the following under WAMP:
 
-- Go to WAMP and select <tt>Apache->Apache Modules->Rewrite Module</tt> and enable it.
-- Edit your <tt>httpd.conf</tt> file and uncomment the line: LoadModule rewrite_module modules/mod_rewrite.so
+- Go to WAMP and select `Apache->Apache Modules->Rewrite Module` and enable it.
+- Edit your `httpd.conf` file and uncomment the line: `LoadModule rewrite_module modules/mod_rewrite.so`
 - Restart Apache

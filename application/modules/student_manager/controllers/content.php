@@ -1,34 +1,76 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Content extends Admin_Controller {
+    protected $permissionCreate = 'Student_manager.Content.Create';
+    protected $permissionDelete = 'Student_manager.Content.Delete';
+    protected $permissionEdit   = 'Student_Manager.Content.Edit';
+    protected $permissionView   = 'Student_manager.Content.View';
 
 	public function __construct() {
         parent::__construct();
 
-		$this->auth->restrict('Student_Manager.Content.View');
+		$this->auth->restrict($this->permissionView);
+        $this->lang->load('student_manager');
 
-		$this->load->model(array('student_model', 'studentView_model', 'course/programme_model', 
-		'faculty/faculty_model', 'faculty/department_model', 'course/degree_model', 'course/coursebank_model'));
+        $this->load->model('student_model');
 
-		$this->load->library('pagination');
+        $this->form_validation->set_error_delimiters("<span class='error'>", "</span>");
 
-        Assets::add_css( css_path() . 'chosen.css');
-        Assets::add_js( js_path() . 'chosen.jquery.min.js' );
-
-        Template::set('toolbar_title', 'Student Manager');
+        Template::set('toolbar_title', lang('student_manager'));
         Template::set_block('sub_nav', 'content/_sub_nav');
+
+        Assets::add_css(array(
+            'chosen.css',
+            'bootstrap-datepicker.css',
+            'colorbox.css'));
+        Assets::add_js(array(
+            'chosen.jquery.min.js',
+            'jquery.colorbox.js',
+            'bootstrap-datepicker.js',));
+        Assets::add_module_js('users', 'user.js');
+        Assets::add_module_js('student_manager', 'student_manager.js');
     }
 
-	public function index() {
-		
+	/**
+	 * Display and manager lists of all students
+	 * @param  integer $offset [description]
+	 * @return [type]          [description]
+	 */
+	public function index ($offset = 0) {
+		$this->load->model('studentView_model');
+
+        // Deleting anything?
+        if (isset($_POST['delete'])) {
+           $this->auth->restrict($this->permissionDelete);
+           $checked = $this->input->post('checked');
+
+           if (is_array($checked) && count($checked)) {
+
+              // If any of the deletions fail, set the result to false, so
+              // failure message is set if any of the attempts fail, not just
+              // the last attempt
+
+              $result = true;
+
+              foreach ($checked as $pid) {
+                 $deleted = $this->student_model->delete($pid);
+                    if ($deleted == false) {
+                       $result = false;
+                    }
+              }
+
+              if ($result) {
+                 // Log the activity
+                 log_activity($this->auth->user_id(), 'Student deleted : ' . $this->input->ip_address(), 'student_manager');
+                 Template::set_message(count($checked) . ' ' . lang('pras_delete_success'), 'success');
+              } else {
+                 Template::set_message(lang('pras_delete_failure') . $this->student_model->error, 'error');
+              }
+           }
+        }
+
 		$faculties = $this->studentView_model->get_students_faculties();
 		Template::set('faculties', $faculties);
-		
-		$departments = $this->studentView_model->get_students_departments();
-		Template::set('departments', $departments);
-
-		$levels = config_item('miscellaneous.level');
-		Template::set('levels', $levels);
 
 		$studyModes=config_item('miscellaneous.studyMode');
 		Template::set('studyModes', $studyModes);
@@ -65,6 +107,12 @@ class Content extends Admin_Controller {
 		}
 
 		$where = array();
+
+        $search_term = $this->input->post('search_term');
+        if ($search_term) {
+            $search_terms = array('firstname'=>$search_term,'middlename'=>$search_term,'lastname'=>$search_term, 'matricNo'=>$search_term, 'jamb_reg'=>$search_term);
+            $this->studentView_model->or_like($search_terms);
+        }
 
 		// Filters
 		$filter = $this->input->get('filter');
@@ -103,75 +151,45 @@ class Content extends Admin_Controller {
 				$where['studentView.fac_id'] = $fac_id;
 
 				foreach ($faculties as $faculty) {
-					if ($faculty->fac_id == $fac_id) {
+					if ($faculty->id == $fac_id) {
 						Template::set('filter_faculty', $faculty->fac_name);
-						break;
-					}
-				}
-				break;			
-			/*case 'department':
-				$dept_id = (int)$this->input->get('dept_id');
-				$where['studentView.dept_id'] = $dept_id;
-
-				foreach ($departments as $department) {
-					if ($department->dept_id == $dept_id) {
-						Template::set('filter_department', $department->dept_name);
-						break;
-					}
-				}
-				break;*/
-			case 'level':
-				$level_id = (int)$this->input->get('level');
-				$where['studentView.level'] = $level_id;
-
-				foreach ($levels as $key=>$name) {
-					if ($key == $level_id) {
-						Template::set('filter_level', $name);
 						break;
 					}
 				}
 				break;
 			default:
-				//$where['students.deleted'] = 0;
 				$this->studentView_model->where('studentView.deleted', 0);
-				//$this->student_model;
 				break;
 		}
 
-		$search_term = $this->input->post('search_term');
-		$search_terms = array('fullname'=>$search_term, 'matricNo'=>$search_term, 'jamb_reg'=>$search_term );
-		if ($search_term) {
-			$this->studentView_model->or_like($search_terms);
-			Template::set('search_term', $search_term);
-		}
+        $this->load->helper('ui/ui');
 
-		$this->load->helper('ui/ui');
+        $limit  = $this->settings_lib->item('site.list_limit') ?: 15;
 
-		$this->studentView_model->limit($this->limit, $offset)->where($where);
-		$this->studentView_model;
+        $this->studentView_model->limit($limit, $offset)->where($where);
+		$records = $this->studentView_model->find_all();
 
-		Template::set('students', $this->studentView_model->find_all());
+        $this->load->library('pagination');
+		$pagerUriSegment = 5;
+        $pagerBaseUrl = site_url(SITE_AREA . '/content/student_manager') . '/';
 
-		// Pagination
-		$this->load->library('pagination');
+        $total_students = $this->studentView_model->where($where)->count_all();
 
-		$this->studentView_model->where($where);
-		$total_students = $this->studentView_model->count_all();
+        $pager['base_url']    = $pagerBaseUrl;
+        $pager['total_rows']  = $total_students;
+        $pager['per_page']    = $limit;
+        $pager['uri_segment'] = $pagerUriSegment;
 
-		$this->pager['base_url'] = site_url(SITE_AREA .'/content/student_manager/index');
-		$this->pager['total_rows'] = $total_students;
-		$this->pager['per_page'] = $this->limit;
-		$this->pager['uri_segment']	= 5;
+        $this->pagination->initialize($pager);
 
-		$this->pagination->initialize($this->pager);
-
+		Template::set('records', $records);
 		Template::set('total', $total_students);
 		Template::set('current_url', current_url());
 		Template::set('filter', $filter);
 
 		Template::render();
 	}
-
+    /*
 	public function create() {
 		$this->auth->restrict('Student_Manager.Content.Add', SITE_AREA.'/content/student_manager');
 
@@ -181,13 +199,13 @@ class Content extends Admin_Controller {
                 log_activity($this->auth->user_id(), 'New student details created : ' . $this->input->ip_address(), 'student_manager');
                 Template::set_message('Your student details was successfully created.', 'success');
                 redirect(SITE_AREA .'/content/student_manager');
-            } 
+            }
         }
-        
+
         //set array of available faculties and departments
         Template::set('listFaculty', $this->faculty_model->faculty_list());
         Template::set('listDepartment', $this->department_model->department_list());
-        
+
         Template::set_view('content/create');
         Template::render();
 	}
@@ -206,7 +224,7 @@ class Content extends Admin_Controller {
                 redirect(SITE_AREA .'/content/student_manager');
             }
         }
-        
+
         //set array of available faculties and departments
         Template::set('listFaculty', $this->faculty_model->faculty_list());
         Template::set('listDepartment', $this->department_model->department_list());
@@ -216,9 +234,9 @@ class Content extends Admin_Controller {
         Template::set_view('content/edit');
         Template::render();
     }
-
+    */
     //to delete
-    public function delete()  {
+    /*    public function delete()  {
 
         $this->auth->restrict('Student_Manager.Content.Delete', SITE_AREA.'/content/student_manager');
 
@@ -237,18 +255,36 @@ class Content extends Admin_Controller {
 
         redirect(SITE_AREA .'/content/student_manager');
     }
-
+    */
 	/*--------------------------------------------------------------------
 	/	PRIVATE FUNCTIONS
 	/-------------------------------------------------------------------*/
 	private function change_status($checked = false, $status_id = 1) {
+        $this->auth->restrict($this->permissionEdit);
+
 		if ($checked === false) {
 			return;
 		}
-        $this->auth->restrict('Student_Manager.Content.Manage');
-        foreach ($checked as $student_id) {
-			$this->student_model->update($student_id,array('status'=>$status_id));
+
+        $result = true;
+
+        foreach ($checked as $id) {
+            #$changed = $this->student_model->update($id, array('status'=>$status_id));
+
+            $changed = $this->db->query("UPDATE bf_students SET status = $status_id WHERE id = $id");
+
+            if ($changed == false) {
+                $result = false;
+            }
 		}
+
+        if ($result) {
+             // Log the activity
+            log_activity($this->auth->user_id(), 'Student status changed : ' . $this->input->ip_address(), 'student_manager');
+            Template::set_message(count($checked) . ' Student status change successfully', 'success');
+        } else {
+            Template::set_message('Cannot change Student status' . $this->student_model->error, 'error');
+        }
 	}
 }
 

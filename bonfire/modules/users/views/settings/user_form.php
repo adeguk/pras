@@ -1,186 +1,148 @@
-<?php if (isset($user) && $user->banned) : ?>
+<?php
+
+$errorClass = ' error';
+$controlClass = 'span6';
+$fieldData = array(
+    'errorClass'    => $errorClass,
+    'controlClass'  => $controlClass,
+);
+
+
+if (isset($password_hints)) {
+    $fieldData['password_hints'] = $password_hints;
+}
+
+// For the settings form, $renderPayload should not be set to $current_user or
+// $this->auth->user(), as it can't be assumed that $current_user is the same as
+// the user being edited.
+$renderPayload = null;
+if (isset($current_user)) {
+    $fieldData['current_user'] = $current_user;
+}
+if (isset($user)) {
+    $fieldData['user'] = $user;
+    $renderPayload = $user;
+}
+
+if (validation_errors()) :
+?>
+<div class='alert alert-error'>
+    <?php echo validation_errors(); ?>
+</div>
+<?php
+endif;
+
+if (isset($user) && $user->banned) :
+?>
 <div class="alert alert-warning fade in">
-	<h4 class="alert-heading"><?php echo lang('us_banned_admin_note'); ?></h4>
+    <h4 class="alert-heading"><?php echo lang('us_banned_admin_note'); ?></h4>
 </div>
-<?php endif; ?>
+<?php
+endif;
 
-<?php if (isset($password_hints) ) : ?>
-<div class="row-fluid">
-	<div class="span8 offset2">
-		<div class="alert alert-info fade in">
-		  <a data-dismiss="alert" class="close">&times;</a>
-			<?php echo $password_hints; ?>
-		</div>
-	</div>
+if (isset($password_hints)) :
+?>
+<div class="alert alert-info fade in">
+    <a data-dismiss="alert" class="close">&times;</a>
+    <?php echo $password_hints; ?>
 </div>
-<?php endif; ?>
+<?php
+endif;
 
-
-	<?php echo form_open($this->uri->uri_string(), 'class="form-horizontal" autocomplete="off"'); ?>
-
-	<fieldset>
-		<legend><?php echo lang('us_account_details') ?></legend>
-
-		<div class="control-group <?php echo form_error('email') ? 'error' : '' ?>">
-			<label for="email" class="control-label"><?php echo lang('bf_email') ?></label>
-			<div class="controls">
-				<input type="email" name="email" id="email" value="<?php echo set_value('email', isset($user) ? $user->email : '') ?>">
-				<?php if (form_error('email')) echo '<span class="help-inline">'. form_error('email') .'</span>'; ?>
-			</div>
-		</div>
-
-		<div class="control-group <?php echo form_error('username') ? 'error' : '' ?>">
-			<label for="username" class="control-label"><?php echo lang('bf_username') ?></label>
-			<div class="controls">
-				<input type="text" name="username" id="username" value="<?php echo set_value('username', isset($user) ? $user->username : '') ?>">
-				<?php if (form_error('username')) echo '<span class="help-inline">'. form_error('username') .'</span>'; ?>
-			</div>
-		</div>
-
-		<div class="control-group <?php echo form_error('display_name') ? 'error' : '' ?>">
-			<label for="display_name" class="control-label"><?php echo lang('bf_display_name') ?></label>
-			<div class="controls">
-				<input type="text" name="display_name" id="display_name" value="<?php echo set_value('display_name', isset($user) ? $user->display_name : '') ?>">
-				<?php if (form_error('display_name')) echo '<span class="help-inline">'. form_error('display_name') .'</span>'; ?>
-			</div>
-		</div>
-
-		<div class="control-group <?php echo form_error('password') ? 'error' : '' ?>">
-			<label for="password" class="control-label"><?php echo lang('bf_password') ?></label>
-			<div class="controls">
-				<input type="password" id="password" name="password" value="">
-				<?php if (form_error('password')) echo '<span class="help-inline">'. form_error('password') .'</span>'; ?>
-			</div>
-		</div>
-
-		<div class="control-group <?php echo form_error('pass_confirm') ? 'error' : '' ?>">
-			<label class="control-label" for="pass_confirm"><?php echo lang('bf_password_confirm') ?></label>
-			<div class="controls">
-				<input type="password" name="pass_confirm" id="pass_confirm" value="">
-				<?php if (form_error('pass_confirm')) echo '<span class="help-inline">'. form_error('pass_confirm') .'</span>'; ?>
-			</div>
-		</div>
-
-		<div class="control-group <?php echo form_error('language') ? 'error' : '' ?>">
-			<label class="control-label" for="language"><?php echo lang('bf_language') ?></label>
-			<div class="controls">
-				<select name="language" id="language" class="chzn-select">
-				<?php if (isset($languages) && is_array($languages) && count($languages)) : ?>
-					<?php foreach ($languages as $language) : ?>
-						<option value="<?php e($language) ?>" <?php echo set_select('language', $language, isset($user->language) && $user->language == $language ? TRUE : FALSE) ?>>
-							<?php e(ucfirst($language)) ?>
-						</option>
-
-					<?php endforeach; ?>
-				<?php endif; ?>
-				</select>
-				<?php if (form_error('language')) echo '<span class="help-inline">'. form_error('language') .'</span>'; ?>
-			</div>
-		</div>
-
-		<div class="control-group <?php echo form_error('timezone') ? 'error' : '' ?>">
-			<label class="control-label" for="timezones"><?php echo lang('bf_timezone') ?></label>
-			<div class="controls">
-				<?php echo timezone_menu(set_value('timezones', isset($user) ? $user->timezone : $current_user->timezone)); ?>
-				<?php if (form_error('timezones')) echo '<span class="help-inline">'. form_error('timezones') .'</span>'; ?>
-			</div>
-		</div>
-	</fieldset>
-
-	<?php if (has_permission('Bonfire.Roles.Manage') &&
-	          (!isset($user) || (isset($user) && has_permission('Permissions.'.$user->role_name.'.Manage'))))
-	:?>
-		<fieldset>
-			<legend><?php echo lang('us_role'); ?></legend>
-
-			<div class="control-group">
-				<label for="role_id" class="control-label"><?php echo lang('us_role'); ?></label>
-				<div class="controls">
-					<select name="role_id" id="role_id" class="chzn-select">
-					<?php if (isset($roles) && is_array($roles) && count($roles)) : ?>
-						<?php foreach ($roles as $role) : ?>
-
-							<?php if (has_permission('Permissions.'. ucfirst($role->role_name) .'.Manage')) : ?>
-							<?php
-								// check if it should be the default
-								$default_role = FALSE;
-								if ((isset($user) && $user->role_id == $role->role_id) || (!isset($user) && $role->default == 1))
-								{
-									$default_role = TRUE;
-								}
-							?>
-							<option value="<?php echo $role->role_id ?>" <?php echo set_select('role_id', $role->role_id, $default_role) ?>>
-								<?php e(ucfirst($role->role_name)) ?>
-							</option>
-
-							<?php endif; ?>
-
-						<?php endforeach; ?>
-					<?php endif; ?>
-					</select>
-				</div>
-			</div>
-		</fieldset>
-		<?php endif; ?>
-
-		<?php
-			// Allow modules to render custom fields
-			Events::trigger('render_user_form');
-		?>
-
-
-		<!-- Start of User Meta -->
-		<?php $this->load->view('users/user_meta');?>
-		<!-- End of User Meta -->
-
-
-		<?php if (isset($user) && has_permission('Permissions.'. ucfirst($user->role_name).'.Manage') && $user->id != $this->auth->user_id() && ($user->banned || $user->deleted)) : ?>
-		<fieldset>
-			<legend><?php echo lang('us_account_status') ?></legend>
-
-			<?php
-			$field = 'activate';
-			if ($user->active) :
-					$field = 'de'.$field;
-			endif; ?>
-			<div class="control-group">
-					<div class="controls">
-							<label for="<?php echo $field; ?>">
-									<input type="checkbox" name="<?php echo $field; ?>" id="<?php echo $field; ?>" value="1">
-									<?php echo lang('us_'.$field.'_note') ?>
-							</label>
-					</div>
-			</div>
-
-			<?php if ($user->deleted) : ?>
-			<div class="control-group">
-				<div class="controls">
-					<label for="restore">
-						<input type="checkbox" name="restore" id="restore" value="1">
-						<?php echo lang('us_restore_note') ?>
-					</label>
-				</div>
-			</div>
-
-			<?php elseif ($user->banned) :?>
-			<div class="control-group">
-				<div class="controls">
-					<label for="unban">
-						<input type="checkbox" name="unban" id="unban" value="1">
-						<?php echo lang('us_unban_note') ?>
-					</label>
-				</div>
-			</div>
-			<?php endif; ?>
-
-		</fieldset>
-		<?php endif; ?>
-
-
-		<div class="form-actions">
-			<input type="submit" name="save" class="btn btn-primary" value="<?php echo lang('bf_action_save') .' '. lang('bf_user') ?> " /> <?php echo lang('bf_or') ?>
-			<?php echo anchor(SITE_AREA .'/settings/users', lang('bf_action_cancel')); ?>
-		</div>
-
-	<?php echo form_close(); ?>
-
+echo form_open($this->uri->uri_string(), array('class' => 'form-horizontal', 'autocomplete' => 'off'));
+?>
+    <fieldset>
+        <legend><?php echo lang('us_account_details'); ?></legend>
+        <?php Template::block('user_fields', 'user_fields', $fieldData); ?>
+    </fieldset>
+    <?php
+    $canManageUser = false;
+    if (! isset($user)) {
+        $canManageUser = true;
+    } elseif ($this->auth->has_permission('Permissions.' . ucfirst($user->role_name) . '.Manage')) {
+        $canManageUser = true;
+    }
+    if ($canManageUser && $this->auth->has_permission('Bonfire.Roles.Manage')) :
+    ?>
+    <fieldset>
+        <legend><?php echo lang('us_role'); ?></legend>
+        <div class="control-group">
+            <label for="role_id" class="control-label"><?php echo lang('us_role'); ?></label>
+            <div class="controls">
+                <select name="role_id" id="role_id" class="chzn-select <?php echo $controlClass; ?>">
+                    <?php
+                    if (! empty($roles) && is_array($roles)) :
+                        foreach ($roles as $role) :
+                            if ($this->auth->has_permission('Permissions.' . ucfirst($role->role_name) . '.Manage')) :
+                                // The selected role is the role assigned to the
+                                // user or the site's default role.
+                                $selectedRole = isset($user) ? ($user->role_id == $role->role_id)
+                                    : ($role->default == 1);
+                    ?>
+                    <option value="<?php echo $role->role_id; ?>" <?php echo set_select('role_id', $role->role_id, $selectedRole); ?>>
+                        <?php e(ucfirst($role->role_name)); ?>
+                    </option>
+                    <?php
+                            endif;
+                        endforeach;
+                    endif;
+                    ?>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+    <?php endif; ?>
+    <fieldset>
+        <?php
+        // Allow modules to render custom fields.
+        Events::trigger('render_user_form', $renderPayload);
+        ?>
+        <!-- Start of User Meta -->
+        <?php $this->load->view('users/user_meta');?>
+        <!-- End of User Meta -->
+    </fieldset>
+    <?php
+    if (isset($user)
+        && $this->auth->has_permission('Permissions.' . ucfirst($user->role_name) . '.Manage')
+        && $user->id != $this->auth->user_id()
+        && ($user->banned || $user->deleted)
+    ) :
+        $field = ($user->active ? 'de' : '') . 'activate';
+    ?>
+    <fieldset>
+        <legend><?php echo lang('us_account_status'); ?></legend>
+        <div class="control-group">
+            <div class="controls">
+                <label for="<?php echo $field; ?>">
+                    <input type="checkbox" name="<?php echo $field; ?>" id="<?php echo $field; ?>" value="1" />
+                    <?php echo lang("us_{$field}_note"); ?>
+                </label>
+            </div>
+        </div>
+        <?php if ($user->deleted) : ?>
+        <div class="control-group">
+            <div class="controls">
+                <label for="restore">
+                    <input type="checkbox" name="restore" id="restore" value="1" />
+                    <?php echo lang('us_restore_note'); ?>
+                </label>
+            </div>
+        </div>
+        <?php elseif ($user->banned) : ?>
+        <div class="control-group">
+            <div class="controls">
+                <label for="unban">
+                    <input type="checkbox" name="unban" id="unban" value="1" />
+                    <?php echo lang('us_unban_note'); ?>
+                </label>
+            </div>
+        </div>
+        <?php endif; ?>
+    </fieldset>
+    <?php endif; ?>
+    <fieldset class="form-actions">
+        <input type="submit" name="save" class="btn btn-primary" value="<?php echo lang('bf_action_save') . ' ' . lang('bf_user'); ?>" />
+        <?php echo lang('bf_or') . ' ' . anchor(SITE_AREA . '/settings/users', lang('bf_action_cancel')); ?>
+    </fieldset>
+<?php
+echo form_close();

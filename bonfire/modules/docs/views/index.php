@@ -1,9 +1,11 @@
-<?php if (isset($content) && !empty($content)) : ?>
-    <div class="page">
-        <?php echo $content; ?>
-    </div>
+<?php if (empty($content)) : ?>
+<div class="alert">
+    <span class="glyphicon glyphicon-book"></span>
+    <?php echo lang('docs_not_found'); ?>
+</div>
 <?php else: ?>
-    <div class="alert">
-        Unable to find the docs you were looking for.
-    </div>
-<?php endif; ?>
+<div class="page">
+    <?php echo $content; ?>
+</div>
+<?php
+endif;

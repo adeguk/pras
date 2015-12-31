@@ -1,85 +1,104 @@
+<?php
+   $asc = '<i class="fa fa-arrow-up fa-fw" style="color:#0f0"></i>&nbsp';
+   $desc = '<i class="fa fa-arrow-down fa-fw" style="color:#f00"></i>&nbsp';
+?>
+
 <div class="row">
-	<br style="clear:both">    
+	<br style="clear:both">
 	<div class="column size1of3">
 		<!-- Population Statistics -->
 		<div class="admin-box">
-			<h4><?= 'Top 5 Faculties (&uarr;)'; ?></h4>
+			<h4><?= "$asc Top 5 Faculties"; ?></h4>
+			<table class="table table-striped table-bordered">
 			<?php if (isset($top_faculties) && is_array($top_faculties) && count($top_faculties)) : ?>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th><?= 'Faculty'; ?></th>
-							<th><?= 'Total Students'; ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php foreach ($top_faculties as $top_faculty) : ?>
-						<tr>
-							<td>
-								<strong><?= $top_faculty->fac_name; ?></strong>
-							</td>
-							<td><?= $top_faculty->total; ?></td>
-						</tr>
-					<?php endforeach; ?>
-					</tbody>
-				</table>
-			<?php else : ?>
-				<?= lang('activity_no_top_faculties'); ?>
-			<?php endif; ?>
+				<thead>
+					<tr>
+						<th><?= 'Faculty'; ?></th>
+						<th><?= 'Total Students'; ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach ($top_faculties as $top_faculty) : ?>
+					<tr>
+						<td>
+							<strong><?= $top_faculty->faculty; ?></strong>
+						</td>
+						<td><?= $top_faculty->total; ?></td>
+					</tr>
+				<?php endforeach;
+				else : ?>
+					<tr>
+						<div class="alert alert-warning">
+							<?php echo lang('pras_records_empty'); ?>
+						</div>
+					</tr>
+				<?php endif; ?>
+				</tbody>
+			</table>
 		</div>
 	</div>
+
 	<div class="column size1of3">
 		<div class="admin-box">
-			<h4><?= 'Top 5 Departments (&uarr;)'; ?></h4>
+			<h4><?= "$asc Top 5 Departments"; ?></h4>
+			<table class="table table-striped table-bordered">
 			<?php if (isset($top_faculties) && is_array($top_faculties) && count($top_faculties)) : ?>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th><?= 'Departments'; ?></th>
-							<th><?= 'No. of Students'; ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php foreach ($top_departments as $top_department) : ?>
-						<tr>
-							<td>
-								<strong><?= $top_department->dept_name; ?></strong>
-							</td>
-							<td><?= $top_department->total; ?></td>
-						</tr>
-					<?php endforeach; ?>
-					</tbody>
-				</table>
-			<?php else : ?>
-				<?= lang('activity_no_top_departments'); ?>
-			<?php endif; ?>
+				<thead>
+					<tr>
+						<th><?= 'Departments'; ?></th>
+						<th><?= 'No. of Students'; ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach ($top_departments as $top_department) : ?>
+					<tr>
+						<td>
+							<strong><?= $top_department->department; ?></strong>
+						</td>
+						<td><?= $top_department->total; ?></td>
+					</tr>
+				<?php endforeach;
+				else : ?>
+					<tr>
+						<div class="alert alert-warning">
+							<?php echo lang('pras_records_empty'); ?>
+						</div>
+					</tr>
+				<?php endif; ?>
+				</tbody>
+			</table>
 		</div>
 	</div>
+
 	<div class="column  size1of3">
 		<div class="admin-box">
-			<h4><?= 'Down 5 Departments (&darr;)'; ?></h4>
+			<h4><?= "$desc Down 5 Departments"; ?></h4>
+			<table class="table table-striped table-bordered">
 			<?php if (isset($down_departments) && is_array($down_departments) && count($down_departments)) : ?>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th><?= 'Departments'; ?></th>
-							<th><?= 'Total No. of Students'; ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php foreach ($down_departments as $down_department) : ?>
-						<tr>
-							<td>
-								<strong><?= $down_department->dept_name; ?></strong>
-							</td>
-							<td><?= $down_department->total; ?></td>
-						</tr>
-					<?php endforeach; ?>
-					</tbody>
-				</table>
-			<?php else : ?>
-				<?= lang('activity_no_top_departments'); ?>
-			<?php endif; ?>
+				<thead>
+					<tr>
+						<th><?= 'Departments'; ?></th>
+						<th><?= 'Total No. of Students'; ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach ($down_departments as $down_department) : ?>
+					<tr>
+						<td>
+							<strong><?= $down_department->department; ?></strong>
+						</td>
+						<td><?= $down_department->total; ?></td>
+					</tr>
+				<?php endforeach;
+				else : ?>
+					<tr>
+						<div class="alert alert-warning">
+							<?php echo lang('pras_records_empty'); ?>
+						</div>
+					</tr>
+				<?php endif; ?>
+				</tbody>
+			</table>
 		</div>
 	</div>
 	<br style="clear:both">
@@ -87,91 +106,95 @@
 	<div>
 		<div class="admin-box">
 			<h4><?= 'Overview of All Active Fulltime Students'; ?></h4>
+			<table class="table table-striped table-bordered">
 			<?php if (isset($allCounts) && is_array($allCounts) && count($allCounts)) : ?>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th><?php echo 'Faculty'; ?></th>
-							<th><?php echo '100 Level'; ?></th>
-							<th><?php echo '200 Level'; ?></th>
-							<th><?php echo '300 Level'; ?></th>
-							<th><?php echo '400 Level'; ?></th>
-							<th><?php echo '500 Level'; ?></th>
-							<th><?php echo 'Total'; ?></th>
-						</tr>
-					</thead>
-					<tfoot>
-						<tr>
-							<th><?php echo 'Total'; ?></th>
+				<thead>
+					<tr>
+						<th><?php echo 'Faculty'; ?></th>
+						<th><?php echo '100 Level'; ?></th>
+						<th><?php echo '200 Level'; ?></th>
+						<th><?php echo '300 Level'; ?></th>
+						<th><?php echo '400 Level'; ?></th>
+						<th><?php echo '500 Level'; ?></th>
+						<th><?php echo 'Total'; ?></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th><?php echo 'Total'; ?></th>
+						<th>
+						<?php $x=null;
+							foreach ($allCounts as $allCount) {
+								$x += $allCount->L1;
+							}
+							echo $x; ?>
+						</th>
+						<th>
+						<?php $x=null;
+							foreach ($allCounts as $allCount) {
+								$x += $allCount->L2;
+							}
+							echo $x; ?>
+						</th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allCounts as $allCount) {
-									$x += $allCount->L1; 
-								} 
-								echo $x;
-							?>
-							</th>
-							<th>
-							<?php $x=null; 
-								foreach ($allCounts as $allCount) {
-									$x += $allCount->L2; 
-								} 
-								echo $x;
-							?></th>
-							<th>
-							<?php $x=null; 
-								foreach ($allCounts as $allCount) {
-									$x += $allCount->L3; 
-								} 
+									$x += $allCount->L3;
+								}
 								echo $x;
 							?></th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allCounts as $allCount) {
-									$x += $allCount->L4; 
-								} 
+									$x += $allCount->L4;
+								}
 								echo $x;
 							?></th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allCounts as $allCount) {
-									$x += $allCount->L5; 
-								} 
+									$x += $allCount->L5;
+								}
 								echo $x;
 							?></th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allCounts as $allCount) {
-									$x += $allCount->total; 
-								} 
+									$x += $allCount->total;
+								}
 								echo $x;
 							?></th>
 						</tr>
-					</tfoot>
-					<tbody>
-					<?php foreach ($allCounts as $allCount) : ?>
-						<tr>
-							<td><strong><?php e($allCount->fac_name); ?></strong></td>
-							<td><?php e($allCount->L1); ?></td>
-							<td><?php e($allCount->L2); ?></td>
-							<td><?php e($allCount->L3); ?></td>
-							<td><?php e($allCount->L4); ?></td>
-							<td><?php e($allCount->L5); ?></td>
-							<td><?php e($allCount->total);?></td>
-						</tr>
-					<?php endforeach; ?>
-					</tbody>
-				</table>
-			<?php else : ?>
-				<?= '<h3><b>No record found!</b></h3>'; ?>
-			<?php endif; ?>
+				</tfoot>
+				<tbody>
+				<?php foreach ($allCounts as $allCount) : ?>
+					<tr>
+						<td><strong><?php e($allCount->faculty); ?></strong></td>
+						<td><?php e($allCount->L1); ?></td>
+						<td><?php e($allCount->L2); ?></td>
+						<td><?php e($allCount->L3); ?></td>
+						<td><?php e($allCount->L4); ?></td>
+						<td><?php e($allCount->L5); ?></td>
+						<td><?php e($allCount->total);?></td>
+					</tr>
+				<?php endforeach;
+				else : ?>
+					<tr>
+						<div class="alert alert-warning">
+							<?php echo lang('pras_records_empty'); ?>
+						</div>
+					</tr>
+				<?php endif; ?>
+				</tbody>
+			</table>
 		</div>
 	</div>
-	<div class="column  size1of2">
+<!--Overview of Non-current Students-->
+	<div class="column  size3of5">
 		<div class="admin-box">
 			<h4><?php echo 'Overview of Non-current Students'; ?></h4>
+			<table class="table table-striped table-bordered">
 			<?php if (isset($allNons) && is_array($allNons) && count($allNons)) : ?>
-			<table class="table table-striped">
 				<thead>
 						<tr>
 							<th><?= 'Faculty'; ?></th>
@@ -187,46 +210,46 @@
 						<tr>
 							<th><?= 'Total'; ?></th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allNons as $allNon) {
-									$x += $allNon->L1; 
-								} 
+									$x += $allNon->L1;
+								}
 								echo $x;
 							?>
 							</th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allNons as $allNon) {
-									$x += $allNon->L2; 
-								} 
+									$x += $allNon->L2;
+								}
 								echo $x;
 							?></th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allNons as $allNon) {
-									$x += $allNon->L3; 
-								} 
+									$x += $allNon->L3;
+								}
 								echo $x;
 							?></th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allNons as $allNon) {
-									$x += $allNon->L4; 
-								} 
+									$x += $allNon->L4;
+								}
 								echo $x;
 							?></th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allNons as $allNon) {
-									$x += $allNon->L5; 
-								} 
+									$x += $allNon->L5;
+								}
 								echo $x;
 							?></th>
 							<th>
-							<?php $x=null; 
+							<?php $x=null;
 								foreach ($allNons as $allNon) {
-									$x += $allNon->total; 
-								} 
+									$x += $allNon->total;
+								}
 								echo $x;
 							?></th>
 						</tr>
@@ -243,66 +266,81 @@
 						<td><?php e($allNon->total);?></td>
 					</tr>
 				<?php endforeach; ?>
+				<?php else : ?>
+					<tr>
+						<td>
+			              <div class="alert alert-warning">
+			                 <?php echo lang('pras_records_empty'); ?>
+						 </div>
+						</td>
+					</tr>
+				<?php endif; ?>
 				</tbody>
-			<?php else : ?>
-			<table class="table table-striped">
-				<tr><td><?php echo '<h3><b>No record found!</b></h3>'; ?></td></tr>
-			<?php endif; ?>
 			</table>
 		</div>
 	</div>
-	<div class="column  size1of4">
+<!--Breakdown by Study Mode-->
+	<div class="column  size1of5">
 		<div class="admin-box">
 			<h4><?= 'Breakdown by Study Mode'; ?></h4>
 			<?php if (isset($studymodes) && is_array($studymodes) && count($studymodes)) : ?>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th><?= 'Study Mode'; ?></th>
-							<th><?= 'Counts'; ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php foreach ($studymodes as $studymode) : ?>
-						<tr>
-							<td>
-								<strong><?= config_item('miscellaneous.studyMode')[$studymode->studyMode]; ?></strong>
-							</td>
-							<td><?= $studymode->total; ?></td>
-						</tr>
-					<?php endforeach; ?>
-					</tbody>
-				</table>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th><?= 'Study Mode'; ?></th>
+						<th><?= 'Counts'; ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach ($studymodes as $studymode) : ?>
+					<tr>
+						<td>
+							<strong><?= config_item('miscellaneous.studyMode')[$studymode->studyMode]; ?></strong>
+						</td>
+						<td><?= $studymode->total; ?></td>
+					</tr>
+				<?php endforeach; ?>
 			<?php else : ?>
-				<?= '<h3><b>No record found!</b></h3>'; ?>
+				<tr>
+					<div class="alert alert-warning">
+						<?php echo lang('pras_records_empty'); ?>
+					</div>
+				</tr>
 			<?php endif; ?>
+			</tbody>
+		</table>
 		</div>
 	</div>
-	<div class="column  size1of4">
+<!--Breakdown by Students' Status-->
+	<div class="column  size1of5">
 		<div class="admin-box">
 			<h4><?= 'Breakdown by Students\' Status'; ?></h4>
 			<?php if (isset($byStatus) && is_array($byStatus) && count($byStatus)) : ?>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th><?= 'Status'; ?></th>
-							<th><?= 'Counts'; ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php foreach ($byStatus as $byS) : ?>
-						<tr>
-							<td>
-								<strong><?= config_item('miscellaneous.student_status')[$byS->status]; ?></strong>
-							</td>
-							<td><?= $byS->total; ?></td>
-						</tr>
-					<?php endforeach; ?>
-					</tbody>
-				</table>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th><?= 'Status'; ?></th>
+						<th><?= 'Counts'; ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach ($byStatus as $byS) : ?>
+					<tr>
+						<td>
+							<strong><?= config_item('miscellaneous.student_status')[$byS->status]; ?></strong>
+						</td>
+						<td><?= $byS->total; ?></td>
+					</tr>
+				<?php endforeach; ?>
 			<?php else : ?>
-				<?= '<h3><b>No record found!</b></h3>'; ?>
+				<tr>
+					<div class="alert alert-warning">
+						<?php echo lang('pras_records_empty'); ?>
+					</div>
+				</tr>
 			<?php endif; ?>
+			</tbody>
+		</table>
 		</div>
 	</div>
 	<br style="clear:both">

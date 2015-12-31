@@ -1,56 +1,58 @@
-<?php foreach ($meta_fields as $field):
-	if ((isset($field['admin_only']) && $field['admin_only'] === TRUE && isset($current_user) && $current_user->role_id == 1)
-						|| !isset($field['admin_only']) || $field['admin_only'] === FALSE):
-		if (!isset($frontend_only) || ($frontend_only === TRUE && (!isset($field['frontend']) || $field['frontend'] === TRUE))):
+<?php
 
-		if ($field['form_detail']['type'] == 'dropdown'):
-			echo form_dropdown($field['form_detail']['settings'], $field['form_detail']['options'], set_value($field['name'], isset($user->$field['name']) ? $user->$field['name'] : ''), $field['label']);
+if (! empty($meta_fields)) :
 
-		elseif ($field['form_detail']['type'] == 'checkbox'): ?>
-			<div class="control-group <?php echo iif( form_error($field['name']) , 'error'); ?>">
-				<label class="control-label" for="<?php echo $field['name'] ?>"><?php echo $field['label'];?></label>
-				<div class="controls">
-				<?php
-					$form_method = 'form_' . $field['form_detail']['type'];
-					$checked = (isset($user->$field['name']) && $field['form_detail']['value'] == set_value($field['name'], isset($user->$field['name']) ? $user->$field['name'] : '')) ? TRUE : FALSE;
-					echo form_checkbox($field['form_detail']['settings'], $field['form_detail']['value'], $checked);
-				?>
-				</div>
-			</div>
+    $displayFrontend = isset($frontend_only) ? $frontend_only : false;
+    $userIsAdmin     = isset($current_user) ? ($current_user->role_id == 1) : false;
 
-		<?php elseif ($field['form_detail']['type'] == 'state_select' && is_callable('state_select')) : ?>
-			<div class="control-group <?php echo iif( form_error($field['name']) , 'error'); ?>">
-				<label class="control-label" for="<?php echo $field['name'] ?>"><?php echo lang('user_meta_state'); ?></label>
-				<div class="controls">
-					<?php echo state_select(set_value($field['name'], isset($user->$field['name']) ? $user->$field['name'] : 'SC'), 'SC', 'US', $field['name'], 'span10 chzn-select'); ?>
-				</div>
-			</div>
+    foreach ($meta_fields as $field) :
+        $adminField = isset($field['admin_only']) ? $field['admin_only'] : false;
+        // If this is an admin field and the user is not an admin, skip it.
+        if ($adminField && ! $userIsAdmin) {
+            continue;
+        }
 
-			<?php elseif ($field['form_detail']['type'] == 'country_select' && is_callable('country_select')) : ?>
-					<div class="control-group <?php echo iif( form_error('country') , 'error'); ?>">
-						<label class="control-label" for="country"><?php echo lang('user_meta_country'); ?></label>
-						<div class="controls">
-							<?php echo country_select(set_value($field['name'], isset($user->$field['name']) ? $user->$field['name'] : 'US'), 'US', 'country', 'span10 chzn-select'); ?>
-						</div>
-					</div>
+        // Unlike the other values, assume true if $field['frontend'] is not set.
+        $frontField = isset($field['frontend']) ? $field['frontend'] : true;
 
-				<?php elseif ($field['form_detail']['type'] == 'nationality_select' && is_callable('country_select')) : ?>
+        // If displaying the front end and this is not a frontend field, skip it.
+        if ($displayFrontend && ! $frontField) {
+            continue;
+        }
 
-					<div class="control-group <?php echo iif( form_error('nationality') , 'error'); ?>">
-						<label class="control-label" for="nationality"><?php echo 'Nationality'; ?></label>
-						<div class="controls">
-							<?php echo country_select(set_value($field['name'], isset($user->$field['name']) ? $user->$field['name'] : 'NG'), 'NG', 'nationality', 'span10 chzn-select'); ?>
-						</div>
-					</div>
-
-				<?php else:
-
-					$form_method = 'form_' . $field['form_detail']['type'];
-					if (is_callable($form_method)) 	{
-						echo $form_method($field['form_detail']['settings'], set_value($field['name'], isset($user->$field['name']) ? $user->$field['name'] : ''), $field['label']);
-					}
-
-				endif;
-			endif;
-		endif;
-	endforeach; ?>
+        if ($field['form_detail']['type'] == 'dropdown') :
+            echo form_dropdown(
+                $field['form_detail']['settings'],
+                $field['form_detail']['options'],
+                set_value($field['name'], isset($user->{$field['name']}) ? $user->{$field['name']} : ''),
+                $field['label']
+            );
+        elseif ($field['form_detail']['type'] == 'checkbox') : ?>
+        <div class="control-group<?php echo form_error($field['name']) ? ' error' : ''; ?>">
+            <label class="control-label" for="<?php echo $field['name']; ?>"><?php echo $field['label']; ?></label>
+            <div class="controls">
+                <?php
+                echo form_checkbox(
+                    $field['form_detail']['settings'],
+                    $field['form_detail']['value'],
+                    $field['form_detail']['value'] == set_value(
+                        $field['name'],
+                        isset($user->{$field['name']}) ? $user->{$field['name']} : ''
+                    )
+                );
+                ?>
+            </div>
+        </div>
+        <?php
+        else :
+            $form_method = "form_{$field['form_detail']['type']}";
+            if (is_callable($form_method)) {
+                echo $form_method(
+                    $field['form_detail']['settings'],
+                    set_value($field['name'], isset($user->{$field['name']}) ? $user->{$field['name']} : ''),
+                    $field['label']
+                );
+            }
+        endif;
+    endforeach;
+endif;

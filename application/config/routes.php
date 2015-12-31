@@ -1,4 +1,6 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
@@ -23,7 +25,7 @@
 | RESERVED ROUTES
 | -------------------------------------------------------------------------
 |
-| There area two reserved routes:
+| There are two reserved routes (three in CI3):
 |
 |	$route['default_controller'] = 'welcome';
 |
@@ -33,38 +35,51 @@
 |
 |	$route['404_override'] = 'errors/page_missing';
 |
-| This route will tell the Router what URI segments to use if those provided
-| in the URL cannot be matched to a valid route.
+| This route will tell the Router which controller/method to use if those
+| provided in the URL cannot be matched to a valid route.
 |
+| CI3:
+|
+|	$route['translate_uri_dashes'] = FALSE;
+|
+| This is not exactly a route, but allows you to automatically route
+| controller and method names that contain dashes. '-' isn't a valid
+| class or method name character, so it requires translation.
+| When you set this option to TRUE, it will replace ALL dashes in the
+| controller and method URI segments.
+|
+| Examples:	my-controller/index	-> my_controller/index
+|		my-controller/my-method	-> my_controller/my_method
 */
 
-$route['default_controller'] = "home";
+$route['default_controller'] = 'home';
 $route['404_override'] = '';
 
-// Authorization
-$route['login']					= 'users/login';
-$route['register']				= 'users/register';
-$route['logout']				= 'users/logout';
-$route['forgot_password']		= 'users/forgot_password';
-$route['reset_password/(:any)/(:any)']	= "users/reset_password/$1/$2";
+// Authentication
+Route::any(LOGIN_URL, 'users/login', array('as' => 'login'));
+Route::any(REGISTER_URL, 'users/register', array('as' => 'register'));
+Route::block('users/login');
+Route::block('users/register');
 
-// Contexts
-$route[SITE_AREA .'/([a-z_]+)/(:any)/(:any)/(:any)/(:any)/(:any)']		= "$2/$1/$3/$4/$5/$6";
-$route[SITE_AREA .'/([a-z_]+)/(:any)/(:any)/(:any)/(:any)']		= "$2/$1/$3/$4/$5";
-$route[SITE_AREA .'/([a-z_]+)/(:any)/(:any)/(:any)']		= "$2/$1/$3/$4";
-$route[SITE_AREA .'/([a-z_]+)/(:any)/(:any)'] 		= "$2/$1/$3";
-$route[SITE_AREA .'/([a-z_]+)/(:any)']				= "$2/$1/index";
-$route[SITE_AREA .'/content']				= "admin/content/index";
-$route[SITE_AREA .'/reports']				= "admin/reports/index";
-$route[SITE_AREA .'/developer']				= "admin/developer/index";
-$route[SITE_AREA .'/settings']				= "settings/index";
-
-$route[SITE_AREA]	= 'admin/home';
+Route::any('logout', 'users/logout');
+Route::any('forgot_password', 'users/forgot_password');
+Route::any('reset_password/(:any)/(:any)', 'users/reset_password/$1/$2');
 
 // Activation
-$route['activate']		        = 'users/activate';
-$route['activate/(:any)']		= 'users/activate/$1';
-$route['resend_activation']		= 'users/resend_activation';
+Route::any('activate', 'users/activate');
+Route::any('activate/(:any)', 'users/activate/$1');
+Route::any('resend_activation', 'users/resend_activation');
 
-/* End of file routes.php */
-/* Location: ./application/config/routes.php */
+// Contexts
+Route::prefix(SITE_AREA, function(){
+    Route::context('content', array('home' => SITE_AREA .'/content/index'));
+    Route::context('reports', array('home' => SITE_AREA .'/reports/index'));
+    Route::context('developer');
+    Route::context('settings');
+});
+
+$route = Route::map($route);
+
+if (defined(CI_VERSION) && substr(CI_VERSION, 0, 1) != '2') {
+    $route['translate_uri_dashes'] = false;
+}

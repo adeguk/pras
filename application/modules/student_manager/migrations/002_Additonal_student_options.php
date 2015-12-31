@@ -2,31 +2,36 @@
 
 class Migration_Additonal_student_options extends Migration {
 
-    // Student Categories
-        $this->dbforge->add_field('`cat_id` int(11) NOT NULL AUTO_INCREMENT');
-        $this->dbforge->add_field("`category` varchar(50) NOT NULL");
-        $this->dbforge->add_field("`default` tinyint(1) NOT NULL DEFAULT '0'");
-        $this->dbforge->add_key('cat_id', true);
-        $this->dbforge->create_table('students_categories');
-            
-        $this->db->query("INSERT INTO {$prefix}students_categories VALUES(-1, 'Unknown', 0)");
-        $this->db->query("INSERT INTO {$prefix}students_categories VALUES(1, 'Default', 1)");
+    /**
+ 	 * Install this version
+ 	 *
+ 	 * @return void
+ 	 */
+    public function up() {
+       $this->load->dbforge();
 
-        // Status
-        $this->dbforge->add_field('`id` int(11) NOT NULL AUTO_INCREMENT');
-        $this->dbforge->add_field("`status` varchar(50) NOT NULL");
-        $this->dbforge->add_field("`default` tinyint(1) NOT NULL DEFAULT '0'");
-        $this->dbforge->add_key('id', true);
-        $this->dbforge->create_table('students_status');
-            
-        $this->db->query("INSERT INTO {$prefix}students_status VALUES(-1, 'Unknown', 0)");
-        $this->db->query("INSERT INTO {$prefix}students_status VALUES(1, 'Alumni', 1)");
-        $this->db->query("INSERT INTO {$prefix}students_status VALUES(2, 'Spill Over', 0)");
-        $this->db->query("INSERT INTO {$prefix}students_status VALUES(3, 'Rusticated', 0)");
-        $this->db->query("INSERT INTO {$prefix}students_status VALUES(4, 'Suspended', 0)");
-        $this->db->query("INSERT INTO {$prefix}students_status VALUES(5, 'Deferrer', 0)");
+    	// Create Students table
+ 		$this->dbforge->add_field('id');
+ 		$this->dbforge->add_field('user_id         INT(11) NOT NULL');
+ 		$this->dbforge->add_field('matricNo        INT(11) NOT NULL');
+ 		$this->dbforge->add_field('jamb_reg        VARCHAR(11) DEFAULT NULL');
+ 		$this->dbforge->add_field('prog_id         INT(6) NOT NULL');
+ 		$this->dbforge->add_field('progLevel       INT(6) NOT NULL');
+ 		$this->dbforge->add_field('studyMode       INT(3) NOT NULL');
+ 		$this->dbforge->add_field('entryMode       INT(3) NOT NULL');
+ 		$this->dbforge->add_field('created_on      DATETIME NOT NULL');
+ 		$this->dbforge->add_field('deleted         TINYINT(1) NOT NULL DEFAULT 0');
+ 		$this->dbforge->add_field('status          TINYINT(1) NOT NULL DEFAULT 1');
+ 		$this->dbforge->create_table('students');
     }
-	
-	//--------------------------------------------------------------------
-	
+
+    /**
+      * Uninstall this version
+      *
+      * @return void
+      */
+     public function down() {
+         $this->dbforge->drop_table('students');
+     }
+
 }
