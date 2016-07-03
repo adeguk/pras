@@ -17,7 +17,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
  */
-$config['base_url']	= 'http://pras.dev';
+ $sysurl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+ $sysurl .= "://" . $_SERVER['HTTP_HOST'];
+ $sysurl .= str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
+
+$config['base_url']	= $sysurl;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +33,7 @@ $config['base_url']	= 'http://pras.dev';
 | variable so that it is blank.
 |
  */
-$config['index_page'] = "";
+$config['index_page'] = "index.php";
 
 /*
 |--------------------------------------------------------------------------
@@ -311,7 +315,7 @@ $config['cache_query_string'] = false;
 | http://codeigniter.com/user_guide/libraries/encryption.html
 |
  */
-$config['encryption_key'] = "0ed1ad680898a9136b96c2950fba00b9";
+$config['encryption_key'] = "c13a253bb481cd631a92459b44c0422d";
 
 /*
 |--------------------------------------------------------------------------

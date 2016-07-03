@@ -88,7 +88,7 @@ $config['extended_settings_fields'] = array(
         ),
         'permission'  => 'Site.Content.View',
     ),
-    /*array(
+    array(
         'name'        => 'type',
         'label'       => lang('user_meta_type'),
         'rules'       => 'required',
@@ -106,5 +106,5 @@ $config['extended_settings_fields'] = array(
                 'xlarge' => 'Extra Large Shirt',
               ),
         ),
-    ),*/
+    ),
 );

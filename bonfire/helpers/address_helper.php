@@ -39,7 +39,8 @@ if (! function_exists('country_select')) {
      *
      * @return string The full html for the select input.
      */
-    function country_select($selectedIso = '', $defaultIso = 'US', $selectName = 'iso', $classValue = '')  {
+    function country_select($selectedIso = '', $defaultIso = 'US', $selectName = 'iso', $classValue = '')
+    {
         // Grab the countries from the config
         $countries = config_item('address.countries');
         if (! is_array($countries) || empty($countries)) {

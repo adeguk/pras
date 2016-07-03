@@ -1027,41 +1027,4 @@ abstract class CI_DB_forge {
 		$this->fields = $this->keys = $this->primary_keys = array();
 	}
 
-	/**
-	 * Create Table
-	 *
-	 * @param	string	$table		Table name
-	 * @param	bool	$if_not_exists	Whether to add IF NOT EXISTS condition
-	 * @param	array	$attributes	Associative array of table attributes
-	 * @return	bool
-	 */
-	public function create_view($view, $if_not_exists = FALSE, array $attributes = array()) {
-		if ($view === '') {
-			show_error('A view name is required for that operation.');
-		} else {
-			$view = $this->db->dbprefix.$view;
-		}
-
-		if (count($this->fields) === 0) {
-			show_error('Field information is required.');
-		}
-
-		$sql = $this->_create_view($view, $if_not_exists, $attributes);
-
-		if (is_bool($sql))
-		{
-			$this->_reset();
-			if ($sql === FALSE)
-			{
-				return ($this->db->db_debug) ? $this->db->display_error('db_unsupported_feature') : FALSE;
-			}
-		}
-
-		if (($result = $this->db->query($sql)) !== FALSE) {
-			empty($this->db->data_cache['view_names']) OR $this->db->data_cache['view_names'][] = $table;
-		}
-
-		$this->_reset();
-		return $result;
-	}
 }

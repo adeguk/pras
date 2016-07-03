@@ -151,42 +151,42 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $full_tag_open = '<div class="pagination" style="margin-top:10px"><ul>';
+	protected $full_tag_open = '';
 
 	/**
 	 * Full tag close
 	 *
 	 * @var	string
 	 */
-	protected $full_tag_close = '</ul></div>';
+	protected $full_tag_close = '';
 
 	/**
 	 * First tag open
 	 *
 	 * @var	string
 	 */
-	protected $first_tag_open = '<li>';
+	protected $first_tag_open = '';
 
 	/**
 	 * First tag close
 	 *
 	 * @var	string
 	 */
-	protected $first_tag_close = '&nbsp;</li>';
+	protected $first_tag_close = '';
 
 	/**
 	 * Last tag open
 	 *
 	 * @var	string
 	 */
-	protected $last_tag_open = '<li>&nbsp;';
+	protected $last_tag_open = '';
 
 	/**
 	 * Last tag close
 	 *
 	 * @var	string
 	 */
-	protected $last_tag_close = '&nbsp;</li>';
+	protected $last_tag_close = '';
 
 	/**
 	 * First URL
@@ -202,56 +202,56 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $cur_tag_open = '<li class="active"><a href="#"><strong>';
+	protected $cur_tag_open = '<strong>';
 
 	/**
 	 * Current tag close
 	 *
 	 * @var	string
 	 */
-	protected $cur_tag_close = '</strong></a></li>';
+	protected $cur_tag_close = '</strong>';
 
 	/**
 	 * Next tag open
 	 *
 	 * @var	string
 	 */
-	protected $next_tag_open = '<li>&nbsp;';
+	protected $next_tag_open = '';
 
 	/**
 	 * Next tag close
 	 *
 	 * @var	string
 	 */
-	protected $next_tag_close = '&nbsp;</li>';
+	protected $next_tag_close = '';
 
 	/**
 	 * Previous tag open
 	 *
 	 * @var	string
 	 */
-	protected $prev_tag_open = '<li>&nbsp;';
+	protected $prev_tag_open = '';
 
 	/**
 	 * Previous tag close
 	 *
 	 * @var	string
 	 */
-	protected $prev_tag_close = '</li>';
+	protected $prev_tag_close = '';
 
 	/**
 	 * Number tag open
 	 *
 	 * @var	string
 	 */
-	protected $num_tag_open = '<li>';
+	protected $num_tag_open = '';
 
 	/**
 	 * Number tag close
 	 *
 	 * @var	string
 	 */
-	protected $num_tag_close = '</li>';
+	protected $num_tag_close = '';
 
 	/**
 	 * Page query string flag

@@ -1,9 +1,10 @@
 <?php echo theme_view('header'); ?>
 <div class="container"><!-- Start of Main Container -->
-<?php
+    <?php
     echo theme_view('_sitenav');
 
     echo Template::message();
     echo isset($content) ? $content : Template::content();
 
-    echo theme_view('footer'); ?>
+    echo theme_view('footer');
+    ?>
