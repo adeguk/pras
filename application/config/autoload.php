@@ -87,7 +87,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'language');
+$autoload['helper'] = array('url', 'language', 'myhelp');
 
 /*
 | -------------------------------------------------------------------
@@ -101,7 +101,7 @@ $autoload['helper'] = array('url', 'language');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('application');
+$autoload['config'] = array('application', 'miscellaneous');
 
 /*
 | -------------------------------------------------------------------
@@ -115,7 +115,7 @@ $autoload['config'] = array('application');
 | "codeigniter_lang.php" would be referenced as array('codeigniter');
 |
 */
-$autoload['language'] = array();
+$autoload['language'] = array('pras');
 
 /*
 | -------------------------------------------------------------------
