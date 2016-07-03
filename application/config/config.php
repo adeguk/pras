@@ -33,7 +33,7 @@ $config['base_url']	= $sysurl;
 | variable so that it is blank.
 |
  */
-$config['index_page'] = "index.php";
+$config['index_page'] = "";
 
 /*
 |--------------------------------------------------------------------------
