@@ -10,7 +10,9 @@
  * @copyright Copyright (c) 2011 - 2014, Bonfire Dev Team
  * @license   http://opensource.org/licenses/MIT
  * @link      http://cibonfire.com
- * @since     Version 1.0
+ * @since     Version 1.0.1
+ * @modified  adegoroye
+ * @modified_on 04/07/16
  * @filesource
  */
 
@@ -88,7 +90,7 @@ $config['extended_settings_fields'] = array(
         ),
         'permission'  => 'Site.Content.View',
     ),
-    array(
+    /*array(
         'name'        => 'type',
         'label'       => lang('user_meta_type'),
         'rules'       => 'required',
@@ -106,5 +108,5 @@ $config['extended_settings_fields'] = array(
                 'xlarge' => 'Extra Large Shirt',
               ),
         ),
-    ),
+    ),*/
 );
