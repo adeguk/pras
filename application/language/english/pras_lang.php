@@ -21,10 +21,11 @@ $lang['pras_delete_error']    = 'You have not selected any records to delete.';
 $lang['pras_delete_confirm']  = 'Are you sure you want to delete this record?';
 $lang['pras_invalid_id']      = 'Invalid ID!';
 // Activities
-$lang['pras_create_record']             = 'Created New Record';
-$lang['pras_act_create_record']         = 'Created record with ID';
-$lang['pras_act_edit_record']           = 'Updated record with ID';
-$lang['pras_act_delete_record']         = 'Deleted record with ID';
+$lang['pras_create_record']             = 'Create New Record';
+$lang['pras_act_create_record']         = 'Created record with ID: ';
+$lang['pras_act_edit_record']           = 'Updated record with ID: ';
+$lang['pras_update_record']             = 'Update Record';
+$lang['pras_act_delete_record']         = 'Deleted record with ID: ';
 //Listing Specifics
 $lang['pras_records_empty']             = 'No records found that match your selection.';
 $lang['pras_errors_message']            = 'Please fix the following errors:';

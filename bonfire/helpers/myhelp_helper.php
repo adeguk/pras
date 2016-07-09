@@ -138,6 +138,26 @@ if ( ! function_exists('editUser_byRole')) {
 	}//end
 }
 
+if ( ! function_exists('selectOption')) {
+	/**
+	 * Creates a list dropdown option form input based on the entries in the user table.
+	 *
+	 * @param $list Array The values of the item that should be selected when the dropdown is drawn.
+	 * @author: Adewale Adegoroye Sitechum, www.sitechum.com.ng, January 2014
+	 * @return string The full html for the select input.
+	 */
+	function selectOption($list, $id){
+		foreach($list as $key=>$name){
+			if ($key == $id){
+				$selected = " selected=selected ";
+			} else {
+				$selected = "";
+			}
+            echo "<option $selected value= $key > $name </option>";
+        }
+	}//end
+}
+
 if (! function_exists('toExcel')) {
 	/**
 	 * Export any given table and its column(s) to Excel in CSV format using codeigniter DB utility class
@@ -208,5 +228,43 @@ if ( ! function_exists('limit_words')) {
         $words = explode(" ", $string);
         return implode(" ", array_splice($words, 0, $word_limit));
 
+    }//end
+}
+
+if ( ! function_exists('statusSwitchCase')) {
+    /**
+     * Creates a limit_words that reduces long description to specify number of character(s).
+     *
+     * @param $string string The original words/characters to be reduced.
+     * @param $word_limit interger The length of character to reduce the original words/sentences by.
+     * @author: Adewale Adegoroye Sitechum, www.sitechum.com.ng, December 2013
+     * @return string The full html for the select input.
+     */
+    function statusSwitchCase ($status, $deleted){
+		$A = (($status == 2) && ($deleted == 1));
+		$B = (($status == 1) && ($deleted == 1));
+		$C = ($status == 1) && ($deleted == 0);
+		$D = ($status == 2);
+
+		$class = '';
+		switch ($status) {
+			case $A:
+				$class = "";
+				break;
+			case $B:
+				$class = "";
+				break;
+			case $C:
+				$class = "label label-success";
+				break;
+			case $D:
+				$class = "label label-warning";
+				break;
+			case $D:
+			default:
+				$class = "label label-danger";
+				break;
+		}
+		return $class;
     }//end
 }
