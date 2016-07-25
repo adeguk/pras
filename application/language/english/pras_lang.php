@@ -53,6 +53,7 @@ $lang['pras_field_studyMode']           = 'Study Mode';
 $lang['pras_field_semester']            = 'Session Semester';
 $lang['pras_field_isRegistration']      = 'Is Registration?';
 $lang['pras_field_isCurrent']           = 'Is Current?';
+$lang['pras_field_degree']             = 'Degree Type';
 $lang['pras_field_degName']             = 'Degree Type';
 $lang['pras_field_abbreviation']        = 'Abbreviation';
 $lang['pras_field_dean']                = 'Dean of Faculty';
@@ -60,6 +61,7 @@ $lang['pras_field_hod']                 = 'Head of Department';
 $lang['pras_field_course']              = 'Course Name';
 $lang['pras_field_courseBank']          = 'Course Bank';
 $lang['pras_field_courseCode']          = 'Course Code';
+$lang['pras_field_courseRegistration']  = 'Course Registration';
 $lang['pras_field_level']               = 'Level';
 $lang['pras_field_startLevel']          = 'Start Level';
 $lang['pras_field_endLevel']            = 'End Level';
@@ -107,6 +109,7 @@ $lang['pras_field_postCode']            = 'Postal Code';
 $lang['pras_field_address']             = 'Contact Address';
 $lang['pras_field_contact']             = 'Contacts';
 // Page title
-$lang['pras_title_academics_manage']    = 'Academics Setup &amp; Management ';
+$lang['pras_title_academics_manage']    = 'Academics Module Setup &amp; Management ';
+$lang['pras_title_coursemanage']        = 'Course Module Setup &amp; Management ';
 // Others
 $lang['bf_context_academic']            = 'Academic';
