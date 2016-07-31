@@ -58,11 +58,13 @@ class CourseBank_Model extends MY_Model {
 
 	//get the list of all course Name and ID
     public function courseBankList() {
-        $courses = $this->select('course_id, courseName')->order_by('courseName', 'desc')->find_all_by('coursebank.deleted', 0);
+        $courses = $this->select()
+			->order_by('courseName', 'desc')
+			->find_all_by('coursebank.deleted', 0);
         $allCourses = array();
 
         foreach($courses as $course) {
-            $allCourses[$course->course_id] = $course->courseName;
+            $allCourses[$course->course_id] = $course->courseName." ($course->dept_name)";
         }
 
         return $allCourses;

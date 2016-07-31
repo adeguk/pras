@@ -95,6 +95,97 @@ class Settings extends Admin_Controller {
         Template::render();
     }
 
+    /**
+     * to create: form display for new academic Session
+     * @return [type] [description]
+     */
+    public function createProgramme() {
+        // Load all required model all at once
+        $this->load->model(array('Degree_Model','CourseBank_Model','Programme_Model'));
+        $model = 'Programme_Model';
+        $this->auth->restrict($this->permissionCreate);
+
+        if (isset($_POST['save'])) {
+            if ($insert_id = $this->saveData($model)) {
+                log_activity($this->auth->user_id(), lang('pras_create_record') . ': ' . $insert_id . ' : ' . $this->input->ip_address(), 'Course');
+                Template::set_message(lang('pras_create_success'), 'success');
+
+                redirect(SITE_AREA . '/settings/course');
+            }
+
+            // Not validation error
+            if ( ! empty($this->$model->error)) {
+                Template::set_message(lang('pras_create_failure') . $this->$model->error, 'error');
+            }
+        }
+
+        Template::set('listDegree', $this->Degree_Model->degree_list());
+        Template::set('listCourseBank', $this->CourseBank_Model->courseBankList());
+        Template::set('studyModes', config_item('miscellaneous.studyMode'));
+        Template::set('durations', config_item('miscellaneous.duration'));
+        Template::set('levels', config_item('miscellaneous.level'));
+        Template::set('status', config_item('miscellaneous.status'));
+        Template::set('subHeader', lang('pras_field_program').': '.lang('pras_create_record'));
+        Template::set_view('settings/saveProgramme');
+        Template::render();
+    }
+
+    /**
+     * To Edit: form display for new academic Session
+     * @return [type] [description]
+     */
+    public function editProgramme()  {
+        // Load all required model all at once
+        $this->load->model(array('Degree_Model','CourseBank_Model','Programme_Model'));
+        $model = 'Programme_Model';
+
+        $id = $this->uri->segment(5);
+        if (empty($id)) {
+            Template::set_message(lang('pras_invalid_id'), 'error');
+            redirect(SITE_AREA . '/settings/course');
+        }
+
+        if (isset($_POST['save'])) {
+            $this->auth->restrict($this->permissionEdit);
+
+            if ($this->saveData($model,'update', $id)) {
+                log_activity($this->auth->user_id(), lang('pras_act_edit_record') . ': ' . $id . ' : ' . $this->input->ip_address(), 'Course');
+                Template::set_message(lang('pras_edit_success'), 'success');
+                redirect(SITE_AREA . '/settings/course');
+            }
+
+            // Not validation error
+            if ( ! empty($this->$model->error)) {
+                Template::set_message(lang('pras_edit_failure') . $this->$model->error, 'error');
+            }
+        }
+
+        elseif (isset($_POST['delete'])) {
+            $this->auth->restrict($this->permissionDelete);
+
+            if ($this->$model->delete($id)) {
+                log_activity($this->auth->user_id(), lang('pras_act_delete_record') . ': ' . $id . ' : ' . $this->input->ip_address(), 'Course');
+                Template::set_message(lang('pras_delete_success'), 'success');
+
+                redirect(SITE_AREA . '/settings/course');
+            }
+
+            Template::set_message(lang('pras_delete_failure') . $this->$model->error, 'error');
+        }
+
+        Template::set('post', $this->$model->find($id));
+
+        Template::set('listDegree', $this->Degree_Model->degree_list());
+        Template::set('listCourseBank', $this->CourseBank_Model->courseBankList());
+        Template::set('studyModes', config_item('miscellaneous.studyMode'));
+        Template::set('durations', config_item('miscellaneous.duration'));
+        Template::set('levels', config_item('miscellaneous.level'));
+        Template::set('status', config_item('miscellaneous.status'));
+        Template::set('subHeader', lang('pras_field_program').': '.lang('pras_create_record'));
+        Template::set_view('settings/saveProgramme');
+        Template::render();
+    }
+
     public function degree() {
         // Load all required model all at once
         $this->load->model('Degree_Model');

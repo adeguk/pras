@@ -59,7 +59,7 @@ class Programme_Model extends MY_Model {
 		array(
 			'field' => 'description',
 		  	'label' => 'lang:pras_field_description',
-		  	'rules' => 'trim|alpha_numeric',
+		  	'rules' => 'trim',
 		),
 		array(
 		  	'field' => 'progDuration',
@@ -74,7 +74,7 @@ class Programme_Model extends MY_Model {
 	    array(
 	        'field' => 'endLevel',
 	        'label' => 'lang:pras_field_endLevel',
-	        'rules' => 'required|0-9',
+	        'rules' => 'required|numeric',
 	    ),
 		array(
 			'field' => 'status',
