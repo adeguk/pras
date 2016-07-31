@@ -559,6 +559,7 @@ class Settings extends Admin_Controller {
             }
         }
 
+        Template::set('listFaculty', $this->Faculty_Model->facultyList());
         Template::set('status', config_item('miscellaneous.status'));
         Template::set('subHeader', lang('pras_field_department').': '.lang('pras_create_record'));
         Template::set_view('settings/saveDepartment');

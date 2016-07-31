@@ -53,11 +53,11 @@
 
                 if (($can_edit) && ($record->deleted == 1)) : ?>
                 <td>
-                    <?php echo anchor($areaUrl . 'editDegree/' . $record->course_id, $edit_icon.$record->courseName); ?>
+                    <?php echo anchor($areaUrl . 'editCourse/' . $record->course_id, $edit_icon.$record->courseName); ?>
                 </td>
                 <?php elseif ($can_edit) : ?>
                 <td>
-                    <?php echo anchor($areaUrl . 'editDegree/' . $record->course_id, $edit_icon.$record->courseName); ?>
+                    <?php echo anchor($areaUrl . 'editCourse/' . $record->course_id, $edit_icon.$record->courseName); ?>
                 </td>
                 <?php else : ?>
                 <td><?php e($record->courseName); ?></td>

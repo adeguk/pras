@@ -39,7 +39,7 @@ class CourseBank_Model extends MY_Model {
        array(
           'field' => 'courseName',
           'label' => 'lang:pras_field_course',
-          'rules' => 'required|trim|alpha',
+          'rules' => 'required|trim|alpha_extra',
        ),
        array(
           'field' => 'dept_id',

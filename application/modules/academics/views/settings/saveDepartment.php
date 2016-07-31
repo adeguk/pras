@@ -43,7 +43,7 @@
 	</div>
 
 	<div class="control-group <?php if (form_error('fac_id')) echo 'error'; ?>">
-		<?php echo form_label(lang('pras_field_faculty') . lang('bf_form_label_required'), 'dean', array('class' => 'control-label')); ?>
+		<?php echo form_label(lang('pras_field_faculty') . lang('bf_form_label_required'), 'fac_id', array('class' => 'control-label')); ?>
 		<div class="controls">
             <select name="fac_id" class="input-xxlarge chzn-select">
                 <option value="0" >Please select the right Faculty...</option>

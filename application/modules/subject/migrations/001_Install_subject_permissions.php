@@ -1,109 +1,109 @@
 <?php defined('BASEPATH') || exit('No direct script access allowed');
 
-class Migration_Install_forum_permissions extends Migration
+class Migration_Install_subject_permissions extends Migration
 {
 	/**
 	 * @var array Permissions to Migrate
 	 */
 	private $permissionValues = array(
 		array(
-			'name' => 'Forum.Academic.View',
-			'description' => 'View Forum Academic',
+			'name' => 'Subject.Academic.View',
+			'description' => 'View available academic subject(s) for all available programme(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Academic.Create',
-			'description' => 'Create Forum Academic',
+			'name' => 'Subject.Academic.Create',
+			'description' => 'Create academic subject for any available programme',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Academic.Edit',
-			'description' => 'Edit Forum Academic',
+			'name' => 'Subject.Academic.Edit',
+			'description' => 'Edit academic subject for any available programme',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Academic.Delete',
-			'description' => 'Delete Forum Academic',
+			'name' => 'Subject.Academic.Delete',
+			'description' => 'Delete academic subject for any available programme',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Content.View',
-			'description' => 'View Forum Content',
+			'name' => 'Subject.Content.View',
+			'description' => 'View content(s) relating to academic subject(s) for any available programme(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Content.Create',
-			'description' => 'Create Forum Content',
+			'name' => 'Subject.Content.Create',
+			'description' => 'Create content relating to academic subject(s) for any available programme(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Content.Edit',
-			'description' => 'Edit Forum Content',
+			'name' => 'Subject.Content.Edit',
+			'description' => 'Edit content(s) relating to academic subject(s) for any available programme(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Content.Delete',
-			'description' => 'Delete Forum Content',
+			'name' => 'Subject.Content.Delete',
+			'description' => 'Delete content(s) relating to academic subject(s) for any available programme(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Reports.View',
-			'description' => 'View Forum Reports',
+			'name' => 'Subject.Reports.View',
+			'description' => 'View all report(s) relating to academic subject(s) for any available programme(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Reports.Create',
-			'description' => 'Create Forum Reports',
+			'name' => 'Subject.Reports.Create',
+			'description' => 'Create report relating to academic subject(s) for any available programme(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Reports.Edit',
-			'description' => 'Edit Forum Reports',
+			'name' => 'Subject.Reports.Edit',
+			'description' => 'Edit report(s) relating to academic subject(s) for any available programme(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Reports.Delete',
-			'description' => 'Delete Forum Reports',
+			'name' => 'Subject.Reports.Delete',
+			'description' => 'Delete report(s) relating to academic subject(s) for any available programme(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Settings.View',
-			'description' => 'View Forum Settings',
+			'name' => 'Subject.Settings.View',
+			'description' => 'View setting(s) relating to academic subject(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Settings.Create',
-			'description' => 'Create Forum Settings',
+			'name' => 'Subject.Settings.Create',
+			'description' => 'Create setting(s) relating to academic subject(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Settings.Edit',
-			'description' => 'Edit Forum Settings',
+			'name' => 'Subject.Settings.Edit',
+			'description' => 'Edit setting(s) relating to academic subject(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Settings.Delete',
-			'description' => 'Delete Forum Settings',
+			'name' => 'Subject.Settings.Delete',
+			'description' => 'Delete setting(s) relating to academic subject(s)',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Developer.View',
-			'description' => 'View Forum Developer',
+			'name' => 'Subject.Developer.View',
+			'description' => 'View academic subject(s) page for advanced user',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Developer.Create',
-			'description' => 'Create Forum Developer',
+			'name' => 'Subject.Developer.Create',
+			'description' => 'Create academic subject(s) page for advanced user',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Developer.Edit',
-			'description' => 'Edit Forum Developer',
+			'name' => 'Subject.Developer.Edit',
+			'description' => 'Edit academic subject(s) page for advanced user',
 			'status' => 'active',
 		),
 		array(
-			'name' => 'Forum.Developer.Delete',
-			'description' => 'Delete Forum Developer',
+			'name' => 'Subject.Developer.Delete',
+			'description' => 'Delete academic subject(s) related page by advanced user',
 			'status' => 'active',
 		),
     );

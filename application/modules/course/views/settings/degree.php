@@ -20,7 +20,7 @@
                 <?php if ($can_delete) : ?>
                 <th class='column-check'><input class='check-all' type='checkbox' /></th>
                 <?php endif;?>
-				<th><?= lang('pras_field_degName'); ?></th>
+				<th><?= lang('pras_field_degree'); ?></th>
 				<th><?= lang('pras_field_abbreviation'); ?></th>
 				<th><?= lang('pras_field_status'); ?></th>
 			</tr>

@@ -9,37 +9,29 @@
 <?php
 	endif;
 
-	$id = isset($post->fac_id) ? $post->fac_id : '';
+	$id = isset($post->deg_id) ? $post->deg_id : '';
 ?>
 <div class="admin-box">
 	<h3><?php e($subHeader); ?></h3>
 
 	<?php echo form_open($this->uri->uri_string(), 'class="form-horizontal"'); ?>
 	<fieldset>
-<!--Faculty name-->
-	<div class="control-group <?php if (form_error('fac_name')) echo 'error'; ?>">
-		<?php echo form_label(lang('pras_field_faculty') . lang('bf_form_label_required'), 'fac_name', array('class' => 'control-label')); ?>
+<!--Degree name-->
+	<div class="control-group <?php if (form_error('degreeName')) echo 'error'; ?>">
+		<?php echo form_label(lang('pras_field_degree') . lang('bf_form_label_required'), 'degreeName', array('class' => 'control-label')); ?>
 		<div class="controls">
-			<input type="text" name="fac_name" class="input-xxlarge" value="<?php echo set_value('fac_name', isset($post) ? $post->fac_name : ''); ?>" placeholder="Type faculty name..." />
-			<?php if (form_error('fac_name')) echo '<span class="help-inline">'. form_error('fac_name') .'</span>'; ?>
+			<input type="text" name="degreeName" class="input-xxlarge" placeholder="Type Degree name..."
+				value="<?php echo set_value('degreeName', isset($post) ? $post->degreeName : ''); ?>" />
+			<?php if (form_error('degreeName')) echo '<span class="help-inline">'. form_error('degreeName') .'</span>'; ?>
 		</div>
 	</div>
-<!--faculty Code-->
-	<div class="control-group <?php if (form_error('fac_code')) echo 'error'; ?>">
-		<?php echo form_label(lang('pras_field_facultyCode') . lang('bf_form_label_required'), 'fac_code', array('class' => 'control-label')); ?>
+<!--degreeAbbreviation-->
+	<div class="control-group <?php if (form_error('degreeAbbreviation')) echo 'error'; ?>">
+		<?php echo form_label(lang('pras_field_abbreviation') . lang('bf_form_label_required'), 'degreeAbbreviation', array('class' => 'control-label')); ?>
 		<div class="controls">
-			<input type="text" name="fac_code" class="input-xxlarge" value="<?php echo set_value('fac_code', isset($post) ? $post->fac_code : ''); ?>" placeholder="Type faculty name..." />
-			<?php if (form_error('fac_code')) echo '<span class="help-inline">'. form_error('fac_code') .'</span>'; ?>
-		</div>
-	</div>
-<!--Dean-->
-	<div class="control-group <?php if (form_error('dean')) echo 'error'; ?>">
-		<?php echo form_label(lang('pras_field_dean') . lang('bf_form_label_required'), 'dean', array('class' => 'control-label')); ?>
-		<div class="controls">
-			<select name="fac_dean" class="input-xxlarge chzn-select">
-                <option value="0" >Please select the Dean of Faculty...</option>
-                <?php editUser_byRole($post->dean, 4); ?>
-            </select>
+			<input type="text" name="degreeAbbreviation" class="input-xxlarge" placeholder="Type Degree Abbreviation..."
+				value="<?php echo set_value('degreeAbbreviation', isset($post) ? $post->degreeAbbreviation : ''); ?>" />
+			<?php if (form_error('degreeAbbreviation')) echo '<span class="help-inline">'. form_error('degreeAbbreviation') .'</span>'; ?>
 		</div>
 	</div>
 <!--Status-->
@@ -56,7 +48,7 @@
 
 	<div class="form-actions">
 		<input type="submit" name="save" class="btn btn-primary" value="Save" />
-		<a href="<?php echo site_url(SITE_AREA .'/settings/academics/faculty') ?>" class="btn btn-warning">Cancel</a>
+		<a href="<?php echo site_url(SITE_AREA .'/settings/course/degree') ?>" class="btn btn-warning">Cancel</a>
 		<?php if ($this->auth->has_permission('Academics.Settings.Delete') && $id > 0) : ?>
 			<button type='submit' name='delete' formnovalidate class='btn btn-danger' id='delete-me'
 				onclick="return confirm('<?php e(js_escape(lang('pras_delete_confirm'))); ?>');">
@@ -71,7 +63,7 @@
     $inline = <<<EOL
 
     $(".chzn-select").chosen();
-    EOL;
+EOL;
     Assets::add_js( $inline, 'inline' );
     unset ( $inline );
 ?>

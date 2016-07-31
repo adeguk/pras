@@ -38,13 +38,13 @@ class Degree_Model extends MY_Model {
 	protected $validation_rules 		= array(
        array(
           'field' => 'degreeName',
-          'label' => 'lang:pras_field_degName',
-          'rules' => 'required|trim|alpha',
+          'label' => 'lang:pras_field_degree',
+          'rules' => 'required|trim|alpha_extra',
        ),
        array(
           'field' => 'degreeAbbreviation',
           'label' => 'lang:pras_field_abbreviation',
-          'rules' => 'required|trim|alpha',
+          'rules' => 'required|trim|alpha_extra',
        ),
        array(
           'field' => 'status',

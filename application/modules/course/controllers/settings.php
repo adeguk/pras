@@ -153,30 +153,29 @@ class Settings extends Admin_Controller {
      * to create: form display for new academic Session
      * @return [type] [description]
      */
-    public function createAcademicSession() {
+    public function createDegree() {
         // Load all required model all at once
-        $this->load->model('AcademicSession_Model');
+        $this->load->model('Degree_Model');
+        $model = 'Degree_Model';
         $this->auth->restrict($this->permissionCreate);
 
         if (isset($_POST['save'])) {
-            if ($insert_id = $this->saveData('AcademicSession_Model')) {
-                log_activity($this->auth->user_id(), lang('pras_create_record') . ': ' . $insert_id . ' : ' . $this->input->ip_address(), 'Academics');
+            if ($insert_id = $this->saveData($model)) {
+                log_activity($this->auth->user_id(), lang('pras_create_record') . ': ' . $insert_id . ' : ' . $this->input->ip_address(), 'Course');
                 Template::set_message(lang('pras_create_success'), 'success');
 
-                redirect(SITE_AREA . '/settings/academics');
+                redirect(SITE_AREA . '/settings/course/degree');
             }
 
             // Not validation error
-            if ( ! empty($this->AcademicSession_Model->error)) {
-                Template::set_message(lang('pras_create_failure') . $this->AcademicSession_Model->error, 'error');
+            if ( ! empty($this->$model->error)) {
+                Template::set_message(lang('pras_create_failure') . $this->$model->error, 'error');
             }
         }
 
-        Template::set('sessions', config_item('miscellaneous.academic_session'));
-        Template::set('studyModes', config_item('miscellaneous.studyMode'));
         Template::set('status', config_item('miscellaneous.status'));
-        Template::set('subHeader', lang('pras_field_session').': '.lang('pras_create_record'));
-        Template::set_view('settings/saveAcademicSession');
+        Template::set('subHeader', lang('pras_field_degree').': '.lang('pras_create_record'));
+        Template::set_view('settings/saveDegree');
         Template::render();
     }
 
@@ -184,51 +183,50 @@ class Settings extends Admin_Controller {
      * To Edit: form display for new academic Session
      * @return [type] [description]
      */
-    public function editAcademicSession()  {
+    public function editDegree()  {
         // Load all required model all at once
-        $this->load->model('AcademicSession_Model');
+        $this->load->model('Degree_Model');
+        $model = 'Degree_Model';
 
         $id = $this->uri->segment(5);
         if (empty($id)) {
             Template::set_message(lang('pras_invalid_id'), 'error');
-            redirect(SITE_AREA . '/settings/academics');
+            redirect(SITE_AREA . '/settings/course/degree');
         }
 
         if (isset($_POST['save'])) {
             $this->auth->restrict($this->permissionEdit);
 
-            if ($this->saveData('AcademicSession_Model','update', $id)) {
-                log_activity($this->auth->user_id(), lang('pras_act_edit_record') . ': ' . $id . ' : ' . $this->input->ip_address(), 'Academics');
+            if ($this->saveData($model,'update', $id)) {
+                log_activity($this->auth->user_id(), lang('pras_act_edit_record') . ': ' . $id . ' : ' . $this->input->ip_address(), 'Course');
                 Template::set_message(lang('pras_edit_success'), 'success');
-                redirect(SITE_AREA . '/settings/academics');
+                redirect(SITE_AREA . '/settings/course/degree');
             }
 
             // Not validation error
-            if ( ! empty($this->AcademicSession_Model->error)) {
-                Template::set_message(lang('pras_edit_failure') . $this->AcademicSession_Model->error, 'error');
+            if ( ! empty($this->$model->error)) {
+                Template::set_message(lang('pras_edit_failure') . $this->$model->error, 'error');
             }
         }
 
         elseif (isset($_POST['delete'])) {
             $this->auth->restrict($this->permissionDelete);
 
-            if ($this->AcademicSession_Model->delete($id)) {
-                log_activity($this->auth->user_id(), lang('pras_act_delete_record') . ': ' . $id . ' : ' . $this->input->ip_address(), 'Academics');
+            if ($this->$model->delete($id)) {
+                log_activity($this->auth->user_id(), lang('pras_act_delete_record') . ': ' . $id . ' : ' . $this->input->ip_address(), 'Course');
                 Template::set_message(lang('pras_delete_success'), 'success');
 
-                redirect(SITE_AREA . '/settings/academics');
+                redirect(SITE_AREA . '/settings/course/degree');
             }
 
-            Template::set_message(lang('pras_delete_failure') . $this->AcademicSession_Model->error, 'error');
+            Template::set_message(lang('pras_delete_failure') . $this->$model->error, 'error');
         }
 
-        Template::set('post', $this->AcademicSession_Model->find($id));
+        Template::set('post', $this->$model->find($id));
 
-        Template::set('sessions', config_item('miscellaneous.academic_session'));
-        Template::set('studyModes', config_item('miscellaneous.studyMode'));
         Template::set('status', config_item('miscellaneous.status'));
-        Template::set('subHeader', lang('pras_field_session').': '.lang('pras_update_record'));
-        Template::set_view('settings/saveAcademicSession');
+        Template::set('subHeader', lang('pras_field_degree').': '.lang('pras_update_record'));
+        Template::set_view('settings/saveDegree');
         Template::render();
     }
 
@@ -283,6 +281,93 @@ class Settings extends Admin_Controller {
 
         Template::set('records', $records);
         Template::set('status', config_item('miscellaneous.status'));
+        Template::render();
+    }
+
+    /**
+     * to create: form display for new academic Session
+     * @return [type] [description]
+     */
+    public function createCourse() {
+        // Load all required model all at once
+        $this->load->model(array('CourseBank_Model', 'academics/Department_Model'));
+        $model = 'CourseBank_Model';
+        $this->auth->restrict($this->permissionCreate);
+
+        if (isset($_POST['save'])) {
+            if ($insert_id = $this->saveData($model)) {
+                log_activity($this->auth->user_id(), lang('pras_create_record') . ': ' . $insert_id . ' : ' . $this->input->ip_address(), 'Course');
+                Template::set_message(lang('pras_create_success'), 'success');
+
+                redirect(SITE_AREA . '/settings/course/courseBank');
+            }
+
+            // Not validation error
+            if ( ! empty($this->$model->error)) {
+                Template::set_message(lang('pras_create_failure') . $this->$model->error, 'error');
+            }
+        }
+
+        #Template::set('sessions', config_item('miscellaneous.academic_session'));
+        #Template::set('studyModes', config_item('miscellaneous.studyMode'));
+        Template::set('listDepartment', $this->Department_Model->department_list());
+        Template::set('status', config_item('miscellaneous.status'));
+        Template::set('subHeader', lang('pras_field_courseBank').': '.lang('pras_create_record'));
+        Template::set_view('settings/saveCourseBank');
+        Template::render();
+    }
+
+    /**
+     * To Edit: form display for new academic Session
+     * @return [type] [description]
+     */
+    public function editCourse()  {
+        // Load all required model all at once
+        $this->load->model(array('CourseBank_Model', 'academics/Department_Model'));
+        $model = 'CourseBank_Model';
+
+        $id = $this->uri->segment(5);
+        if (empty($id)) {
+            Template::set_message(lang('pras_invalid_id'), 'error');
+            redirect(SITE_AREA . '/settings/course/courseBank');
+        }
+
+        if (isset($_POST['save'])) {
+            $this->auth->restrict($this->permissionEdit);
+
+            if ($this->saveData($model,'update', $id)) {
+                log_activity($this->auth->user_id(), lang('pras_act_edit_record') . ': ' . $id . ' : ' . $this->input->ip_address(), 'Course');
+                Template::set_message(lang('pras_edit_success'), 'success');
+                redirect(SITE_AREA . '/settings/course/courseBank');
+            }
+
+            // Not validation error
+            if ( ! empty($this->$model->error)) {
+                Template::set_message(lang('pras_edit_failure') . $this->$model->error, 'error');
+            }
+        }
+
+        elseif (isset($_POST['delete'])) {
+            $this->auth->restrict($this->permissionDelete);
+
+            if ($this->$model->delete($id)) {
+                log_activity($this->auth->user_id(), lang('pras_act_delete_record') . ': ' . $id . ' : ' . $this->input->ip_address(), 'Course');
+                Template::set_message(lang('pras_delete_success'), 'success');
+
+                redirect(SITE_AREA . '/settings/course/courseBank');
+            }
+
+            Template::set_message(lang('pras_delete_failure') . $this->$model->error, 'error');
+        }
+
+        Template::set('post', $this->$model->find($id));
+
+        #Template::set('sessions', config_item('miscellaneous.academic_session'));
+        #Template::set('studyModes', config_item('miscellaneous.studyMode'));
+        Template::set('listDepartment', $this->Department_Model->department_list());
+        Template::set('status', config_item('miscellaneous.status'));
+        Template::set('subHeader', lang('pras_field_courseBank').': '.lang('pras_update_record'));
+        Template::set_view('settings/saveCourseBank');
         Template::render();
     }
 
