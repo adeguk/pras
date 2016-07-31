@@ -1830,6 +1830,33 @@ DROP TABLE IF EXISTS `bf_studentview`;
 
 CREATE ALGORITHM=MERGE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `bf_studentview` AS select `s`.`id` AS `student_id`,`s`.`user_id` AS `user_id`,`s`.`matricNo` AS `matricNo`,`s`.`jamb_reg` AS `jamb_reg`,`s`.`progLevel` AS `level`,`s`.`studyMode` AS `studyMode`,`s`.`entryMode` AS `entryMode`,`s`.`status` AS `status`,`u`.`firstname` AS `firstname`,`u`.`middlename` AS `middlename`,`u`.`lastname` AS `lastname`,`p`.`id` AS `prog_id`,concat(`dg`.`deg_Abbreviation`,convert(space(1) using utf8),`c`.`course_name`) AS `programme`,`p`.`duration` AS `duration`,`p`.`deg_id` AS `deg_id`,`c`.`course_name` AS `course`,`d`.`id` AS `dept_id`,`d`.`dept_name` AS `department`,`f`.`id` AS `fac_id`,`f`.`fac_name` AS `faculty`,`s`.`deleted` AS `deleted` from ((((((`bf_students` `s` join `bf_users` `u` on((`u`.`id` = `s`.`user_id`))) join `bf_program` `p` on((`p`.`id` = `s`.`prog_id`))) join `bf_degree` `dg` on((`dg`.`id` = `p`.`deg_id`))) join `bf_coursebank` `c` on((`c`.`id` = `p`.`course_id`))) join `bf_department` `d` on((`d`.`id` = `c`.`dept_id`))) join `bf_faculty` `f` on((`f`.`id` = `d`.`fac_id`)));
 
+CREATE
+    ALGORITHM = MERGE
+    DEFINER = `root`@`localhost`
+    SQL SECURITY DEFINER
+VIEW `bf_programme_view` AS
+    SELECT
+        `bf_programme`.`prog_id` AS `id`,
+        CONCAT(`bf_degree`.`degreeAbbreviation`,
+                CONVERT( SPACE(1) USING UTF8),
+                `bf_coursebank`.`courseName`) AS `program`,
+        `bf_department`.`dept_name` AS `department`,
+        `bf_faculty`.`fac_name` AS `faculty`,
+        `bf_programme`.`description` AS `description`,
+        `bf_programme`.`studyTypeID` AS `studyTypeID`,
+        `bf_programme`.`programmeCode` AS `programmeCode`,
+        `bf_programme`.`startLevel` AS `startLevel`,
+        `bf_programme`.`endLevel` AS `endlevel`,
+        `bf_programme`.`deleted` AS `deleted`,
+        `bf_programme`.`status` AS `status`
+    FROM
+        ((((`bf_programme`
+        LEFT JOIN `bf_coursebank` ON ((`bf_coursebank`.`course_id` = `bf_programme`.`course_id`)))
+        LEFT JOIN `bf_department` ON ((`bf_department`.`dept_id` = `bf_coursebank`.`dept_id`)))
+        LEFT JOIN `bf_faculty` ON ((`bf_faculty`.`fac_id` = `bf_department`.`fac_id`)))
+        LEFT JOIN `bf_degree` ON ((`bf_degree`.`deg_id` = `bf_programme`.`deg_id`)));
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
