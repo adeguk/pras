@@ -46,7 +46,7 @@ application/modules/**/.hg/*
 
 
 # Ignore all custom modules.
-application/modules/*
+#application/modules/*
 # Except the following modules:
 
 # Remove PHPStorm Project folders
