@@ -1,0 +1,51 @@
+<?php if(!defined('BASEPATH')) exit ('No direct script access allowed');
+class Studytype_model extends MY_Model {
+
+	protected $table_name	= 'studyType';
+	protected $key			= 'studyTypeID';
+	protected $set_created	= false;
+	protected $set_modified	= false;
+	protected $soft_deletes	= true;
+	protected $date_format	= 'datetime';
+
+	//get the list of all studytype Name and ID
+    public function studytype_list() {
+        $sts = $this->select('studyTypeID, studyTypeName')->order_by('studyTypeName', 'desc')->find_all_by('deleted', 0);
+        $studytypes = array();
+
+        foreach($sts as $st) {
+            $studytypes[$st->studyTypeID] = $st->studyTypeName;
+        }
+
+        return $studytypes;
+    }
+
+    //to save:
+    public function save_studytype($type='insert', $id=null) {
+        $this->form_validation->set_rules('studyTypeName', 'Study Type', 'required|trim|xss_clean|strip_tags');
+        $this->form_validation->set_rules('description', 'Description', 'required|trim|xss_clean|strip_tags');
+        $this->form_validation->set_rules('status', 'Status', 'required|trim');
+
+        if ($this->form_validation->run() === false) {
+            return false;
+        }
+
+        // Compile our post data to make sure nothing
+        // else gets through.
+        $data = array(
+            'studyTypeName'=> $this->input->post('studyTypeName'),
+            'description'   => $this->input->post('description'),
+            'status'    => $this->input->post('status')
+        );
+
+        if ($type == 'insert') {
+            $return = $this->insert($data);
+        }
+        else {  // Update
+            $return = $this->update($id, $data);
+        }
+
+        return $return;
+    }
+
+}
